@@ -11,7 +11,10 @@ const URGENCY_STYLES = {
 const STATUS_STYLES = {
   Upcoming: "bg-teal-100 text-teal-800",
   Completed: "bg-gray-200 text-gray-600",
+  Cancelled: "bg-gray-100 text-gray-500 line-through",
 };
+
+const metaLine = (pet) => [pet.species, pet.breed, pet.age].filter(Boolean).join(" · ");
 
 const initialPets = [
   {
@@ -117,9 +120,7 @@ function PetCard({ pet, onOpen }) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="text-lg font-bold text-gray-900">{pet.name}</div>
-          <div className="truncate text-sm text-gray-500">
-            {pet.species} · {pet.breed} · {pet.age}
-          </div>
+          <div className="truncate text-sm text-gray-500">{metaLine(pet)}</div>
         </div>
         <div className="text-right text-xs text-gray-400">
           <div>{pet.reports.length} report{pet.reports.length === 1 ? "" : "s"}</div>
@@ -257,7 +258,7 @@ function ReportForm({ onAdd, onClose }) {
 }
 
 function AppointmentForm({ reports, onAdd, onClose }) {
-  const [visitType, setVisitType] = useState("Sick visit");
+  const [visitType, setVisitType] = useState("Wellness check");
   const [when, setWhen] = useState("");
   const [vet, setVet] = useState("");
   const [promptedBy, setPromptedBy] = useState("");
@@ -351,9 +352,7 @@ function PetDetail({ pet, onBack, onAddReport, onAddAppointment }) {
         </div>
         <div>
           <h2 className="text-2xl font-extrabold text-gray-900">{pet.name}</h2>
-          <div className="text-sm text-gray-500">
-            {pet.species} · {pet.breed} · {pet.age}
-          </div>
+          <div className="text-sm text-gray-500">{metaLine(pet)}</div>
         </div>
       </div>
 
@@ -364,7 +363,7 @@ function PetDetail({ pet, onBack, onAddReport, onAddAppointment }) {
               Symptom log
             </h3>
             <button
-              onClick={() => setShowReportForm(true)}
+              onClick={() => setShowReportForm((open) => !open)}
               className="rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-700"
             >
               + Log symptoms
@@ -412,7 +411,7 @@ function PetDetail({ pet, onBack, onAddReport, onAddAppointment }) {
               Appointments
             </h3>
             <button
-              onClick={() => setShowApptForm(true)}
+              onClick={() => setShowApptForm((open) => !open)}
               className="rounded-lg bg-teal-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-700"
             >
               + Schedule
@@ -498,6 +497,11 @@ export default function PetCoach() {
     );
   };
 
+  const openPet = (id) => {
+    setShowAddPet(false);
+    setView(id);
+  };
+
   const activePet = view === "list" ? null : pets.find((p) => p.id === view);
 
   return (
@@ -519,7 +523,7 @@ export default function PetCoach() {
           </div>
           {view === "list" && (
             <button
-              onClick={() => setShowAddPet(true)}
+              onClick={() => setShowAddPet((open) => !open)}
               className="rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-teal-700"
             >
               + Add pet
@@ -533,7 +537,7 @@ export default function PetCoach() {
               <AddPetForm onAdd={addPet} onClose={() => setShowAddPet(false)} />
             )}
             {pets.map((pet) => (
-              <PetCard key={pet.id} pet={pet} onOpen={setView} />
+              <PetCard key={pet.id} pet={pet} onOpen={openPet} />
             ))}
           </div>
         ) : (
