@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pet Care Coach — v1 Health Records</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --teal: #0d9488;
+    --teal-dark: #0f766e;
+    --teal-soft: #ccfbf1;
+    --teal-faint: #f0fdfa;
+    --ink: #111827;
+    --muted: #6b7280;
+    --faint: #9ca3af;
+    --card-border: #f3f4f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(to bottom, var(--teal-faint), #ffffff 300px);
+    color: var(--ink);
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px; }
+  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 40px; height: 40px; border-radius: 12px; background: var(--teal);
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    box-shadow: 0 2px 6px rgba(13,148,136,0.3);
+  }
+  .brand h1 { font-size: 20px; margin: 0; letter-spacing: -0.02em; }
+  .brand .sub {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--teal);
+  }
+  h2 { font-size: 24px; margin: 0; }
+  h3 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--muted); margin: 0;
+  }
+  .btn {
+    border: 0; border-radius: 8px; background: var(--teal); color: #fff;
+    font-size: 13px; font-weight: 600; padding: 8px 14px; cursor: pointer;
+  }
+  .btn:hover { background: var(--teal-dark); }
+  .btn-ghost { background: transparent; color: var(--muted); }
+  .btn-ghost:hover { background: transparent; color: var(--ink); }
+  .btn-small { font-size: 12px; padding: 6px 10px; }
+  .link {
+    border: 0; background: none; color: var(--teal-dark); font-weight: 600;
+    font-size: 13px; cursor: pointer; padding: 0; margin-bottom: 16px;
+  }
+  .card {
+    background: #fff; border: 1px solid #e6f5f2; border-radius: 16px;
+    padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 14px;
+  }
+  .pet-card { display: flex; align-items: center; gap: 16px; cursor: pointer; transition: border-color 0.15s; }
+  .pet-card:hover { border-color: var(--teal); }
+  .avatar {
+    width: 54px; height: 54px; border-radius: 50%; background: var(--teal-faint);
+    border: 2px solid var(--teal-soft); display: flex; align-items: center;
+    justify-content: center; font-size: 24px; flex-shrink: 0;
+  }
+  .avatar.large { width: 64px; height: 64px; font-size: 30px; }
+  .pet-card .info { flex: 1; min-width: 0; }
+  .pet-card .name { font-size: 17px; font-weight: 700; }
+  .pet-card .meta, .pet-header .meta { font-size: 13px; color: var(--muted); }
+  .pet-card .counts { font-size: 11px; color: var(--faint); text-align: right; line-height: 1.6; }
+  .pet-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 720px) { .columns { grid-template-columns: 1fr; } }
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .item { background: #fff; border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+  .item .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .item .date { font-size: 11px; font-weight: 600; color: var(--faint); }
+  .item .title { font-size: 14px; font-weight: 700; }
+  .item p { font-size: 13px; margin: 4px 0 0; }
+  .item .small { font-size: 11px; color: var(--faint); margin-top: 4px; }
+  .tag {
+    display: inline-block; border-radius: 999px; padding: 2px 10px;
+    font-size: 11px; font-weight: 700;
+  }
+  .tag-low { background: #d1fae5; color: #065f46; }
+  .tag-moderate { background: #fef3c7; color: #92400e; }
+  .tag-high { background: #fee2e2; color: #b91c1c; }
+  .tag-upcoming { background: var(--teal-soft); color: var(--teal-dark); }
+  .tag-completed { background: #e5e7eb; color: #4b5563; }
+  .related {
+    margin-top: 8px; background: var(--teal-faint); color: var(--teal-dark);
+    border-radius: 8px; padding: 5px 10px; font-size: 11px;
+  }
+  .empty {
+    border: 1px dashed var(--teal-soft); border-radius: 12px; padding: 20px;
+    text-align: center; font-size: 13px; color: var(--faint);
+  }
+  .form-panel { background: var(--teal-faint); border: 1px solid var(--teal-soft); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+  .form-panel .form-title { font-size: 13px; font-weight: 700; color: var(--teal-dark); margin-bottom: 10px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 520px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-panel input, .form-panel select, .form-panel textarea {
+    width: 100%; border: 1px solid var(--teal-soft); border-radius: 8px;
+    padding: 8px 10px; font-size: 13px; font-family: inherit; background: #fff;
+  }
+  .form-panel textarea { grid-column: 1 / -1; resize: vertical; }
+  .form-actions { margin-top: 10px; display: flex; gap: 8px; }
+  footer {
+    margin-top: 48px; border-top: 1px solid var(--teal-soft); padding-top: 16px;
+    text-align: center; font-size: 11px; color: var(--faint); line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="brand-mark">🐾</div>
+      <div>
+        <h1>Pet Care Coach</h1>
+        <div class="sub">v1 · Health records</div>
+      </div>
+    </div>
+    <button class="btn" id="add-pet-btn" onclick="toggleAddPet()">+ Add pet</button>
+  </header>
+
+  <main id="app"></main>
+
+  <footer>
+    Pet Care Coach is a fictional product used for class purposes. It does not replace
+    veterinary care — urgent or worsening symptoms should go to your clinic or an
+    emergency veterinary service.
+  </footer>
+</div>
+
+<script>
+const SPECIES_EMOJI = { Dog: "🐕", Cat: "🐈", Rabbit: "🐇" };
+
+let pets = [
+  {
+    id: 1, name: "Maple", species: "Dog", breed: "Lab mix", age: "6y",
+    reports: [
+      { id: 101, date: "2026-08-18",
+        symptoms: "Low energy and eating less than usual. Skipped breakfast. No vomiting, drinking normally.",
+        duration: "About 24 hours", urgency: "Moderate" },
+      { id: 102, date: "2026-06-02",
+        symptoms: "Mild limp on front left leg after a long dog-park session.",
+        duration: "2 days", urgency: "Low" }
+    ],
+    appointments: [
+      { id: 201, visitType: "Sick visit", when: "2026-08-20 · 10:30 AM",
+        vet: "Dr. Patel", status: "Upcoming", promptedBy: 101 },
+      { id: 202, visitType: "Wellness check", when: "2026-03-14 · 9:00 AM",
+        vet: "Dr. Chen", status: "Completed", promptedBy: null }
+    ]
+  },
+  {
+    id: 2, name: "Juniper", species: "Cat", breed: "Domestic shorthair", age: "3y",
+    reports: [
+      { id: 103, date: "2026-08-15",
+        symptoms: "Coughing more than usual, especially in the evening.",
+        duration: "4 days", urgency: "Moderate" }
+    ],
+    appointments: [
+      { id: 203, visitType: "Sick visit", when: "2026-08-25 · 2:15 PM",
+        vet: "Dr. Patel", status: "Upcoming", promptedBy: 103 }
+    ]
+  },
+  {
+    id: 3, name: "Biscuit", species: "Rabbit", breed: "Holland Lop", age: "2y",
+    reports: [], appointments: []
+  }
+];
+
+let view = "list";
+let showAddPet = false;
+let showReportForm = false;
+let showApptForm = false;
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[c]);
+}
+
+function urgencyTag(u) {
+  return '<span class="tag tag-' + u.toLowerCase() + '">' + esc(u) + '</span>';
+}
+function statusTag(s) {
+  return '<span class="tag tag-' + s.toLowerCase() + '">' + esc(s) + '</span>';
+}
+
+function render() {
+  const app = document.getElementById("app");
+  document.getElementById("add-pet-btn").style.display = view === "list" ? "" : "none";
+  if (view === "list") {
+    app.innerHTML = renderList();
+  } else {
+    const pet = pets.find(p => p.id === view);
+    app.innerHTML = pet ? renderDetail(pet) : renderList();
+  }
+}
+
+function renderList() {
+  let html = "";
+  if (showAddPet) {
+    html +=
+      '<div class="form-panel">' +
+      '<div class="form-title">Add a pet</div>' +
+      '<div class="form-grid">' +
+      '<input id="np-name" placeholder="Name">' +
+      '<select id="np-species"><option>Dog</option><option>Cat</option><option>Rabbit</option><option>Other</option></select>' +
+      '<input id="np-breed" placeholder="Breed">' +
+      '<input id="np-age" placeholder="Age (e.g. 4y)">' +
+      '</div>' +
+      '<div class="form-actions">' +
+      '<button class="btn" onclick="savePet()">Save pet</button>' +
+      '<button class="btn btn-ghost" onclick="toggleAddPet()">Cancel</button>' +
+      '</div></div>';
+  }
+  html += pets.map(pet =>
+    '<div class="card pet-card" onclick="openPet(' + pet.id + ')">' +
+    '<div class="avatar">' + (SPECIES_EMOJI[pet.species] || "🐾") + '</div>' +
+    '<div class="info">' +
+    '<div class="name">' + esc(pet.name) + '</div>' +
+    '<div class="meta">' + esc(pet.species) + ' · ' + esc(pet.breed) + ' · ' + esc(pet.age) + '</div>' +
+    '</div>' +
+    '<div class="counts">' +
+    pet.reports.length + ' report' + (pet.reports.length === 1 ? '' : 's') + '<br>' +
+    pet.appointments.length + ' appointment' + (pet.appointments.length === 1 ? '' : 's') +
+    '</div></div>'
+  ).join("");
+  return html;
+}
+
+function renderDetail(pet) {
+  const reportOptions = pet.reports.map(r =>
+    '<option value="' + r.id + '">Prompted by report from ' + esc(r.date) + '</option>'
+  ).join("");
+
+  const reportsHtml = pet.reports.length
+    ? pet.reports.map(r =>
+        '<div class="item">' +
+        '<div class="row"><span class="date">' + esc(r.date) + '</span>' + urgencyTag(r.urgency) + '</div>' +
+        '<p>' + esc(r.symptoms) + '</p>' +
+        (r.duration ? '<div class="small">Duration: ' + esc(r.duration) + '</div>' : '') +
+        '</div>'
+      ).join("")
+    : (showReportForm ? "" : '<div class="empty">Nothing logged yet. When something seems off, log it here.</div>');
+
+  const apptsHtml = pet.appointments.length
+    ? pet.appointments.map(a => {
+        const related = a.promptedBy ? pet.reports.find(r => r.id === a.promptedBy) : null;
+        return '<div class="item">' +
+          '<div class="row"><span class="title">' + esc(a.visitType) + '</span>' + statusTag(a.status) + '</div>' +
+          '<div style="font-size:13px;color:var(--muted)">' + esc(a.when) + '</div>' +
+          '<div class="small">' + esc(a.vet) + '</div>' +
+          (related ? '<div class="related">Prompted by report from ' + esc(related.date) + '</div>' : '') +
+          '</div>';
+      }).join("")
+    : (showApptForm ? "" : '<div class="empty">No appointments yet.</div>');
+
+  const reportForm = showReportForm
+    ? '<div class="form-panel"><div class="form-grid">' +
+      '<textarea id="nr-symptoms" rows="3" placeholder="What have you noticed? (symptoms, behavior changes…)"></textarea>' +
+      '<input id="nr-duration" placeholder="How long? (e.g. 2 days)">' +
+      '<select id="nr-urgency"><option>Low</option><option>Moderate</option><option>High</option></select>' +
+      '</div><div class="form-actions">' +
+      '<button class="btn" onclick="saveReport(' + pet.id + ')">Log report</button>' +
+      '<button class="btn btn-ghost" onclick="toggleReportForm()">Cancel</button>' +
+      '</div></div>'
+    : "";
+
+  const apptForm = showApptForm
+    ? '<div class="form-panel"><div class="form-grid">' +
+      '<select id="na-type"><option>Wellness check</option><option>Sick visit</option><option>Same-day urgent visit</option><option>Follow-up visit</option></select>' +
+      '<input id="na-when" placeholder="When (e.g. 2026-09-02 · 9:00 AM)">' +
+      '<input id="na-vet" placeholder="Preferred vet (optional)">' +
+      '<select id="na-prompted"><option value="">Not related to a report</option>' + reportOptions + '</select>' +
+      '</div><div class="form-actions">' +
+      '<button class="btn" onclick="saveAppointment(' + pet.id + ')">Schedule</button>' +
+      '<button class="btn btn-ghost" onclick="toggleApptForm()">Cancel</button>' +
+      '</div></div>'
+    : "";
+
+  return (
+    '<button class="link" onclick="backToList()">← All pets</button>' +
+    '<div class="pet-header">' +
+    '<div class="avatar large">' + (SPECIES_EMOJI[pet.species] || "🐾") + '</div>' +
+    '<div><h2>' + esc(pet.name) + '</h2>' +
+    '<div class="meta">' + esc(pet.species) + ' · ' + esc(pet.breed) + ' · ' + esc(pet.age) + '</div></div>' +
+    '</div>' +
+    '<div class="columns">' +
+    '<section>' +
+    '<div class="section-head"><h3>Symptom log</h3>' +
+    '<button class="btn btn-small" onclick="toggleReportForm()">+ Log symptoms</button></div>' +
+    reportForm + reportsHtml +
+    '</section>' +
+    '<section>' +
+    '<div class="section-head"><h3>Appointments</h3>' +
+    '<button class="btn btn-small" onclick="toggleApptForm()">+ Schedule</button></div>' +
+    apptForm + apptsHtml +
+    '</section>' +
+    '</div>'
+  );
+}
+
+function openPet(id) { view = id; showReportForm = false; showApptForm = false; render(); }
+function backToList() { view = "list"; render(); }
+function toggleAddPet() { showAddPet = !showAddPet; render(); }
+function toggleReportForm() { showReportForm = !showReportForm; render(); }
+function toggleApptForm() { showApptForm = !showApptForm; render(); }
+
+function savePet() {
+  const name = document.getElementById("np-name").value.trim();
+  if (!name) return;
+  pets.push({
+    id: Date.now(),
+    name: name,
+    species: document.getElementById("np-species").value,
+    breed: document.getElementById("np-breed").value.trim(),
+    age: document.getElementById("np-age").value.trim(),
+    reports: [], appointments: []
+  });
+  showAddPet = false;
+  render();
+}
+
+function saveReport(petId) {
+  const symptoms = document.getElementById("nr-symptoms").value.trim();
+  if (!symptoms) return;
+  const pet = pets.find(p => p.id === petId);
+  pet.reports.unshift({
+    id: Date.now(),
+    date: new Date().toISOString().slice(0, 10),
+    symptoms: symptoms,
+    duration: document.getElementById("nr-duration").value.trim(),
+    urgency: document.getElementById("nr-urgency").value
+  });
+  showReportForm = false;
+  render();
+}
+
+function saveAppointment(petId) {
+  const when = document.getElementById("na-when").value.trim();
+  if (!when) return;
+  const pet = pets.find(p => p.id === petId);
+  const prompted = document.getElementById("na-prompted").value;
+  pet.appointments.unshift({
+    id: Date.now(),
+    visitType: document.getElementById("na-type").value,
+    when: when,
+    vet: document.getElementById("na-vet").value.trim() || "Any available vet",
+    status: "Upcoming",
+    promptedBy: prompted ? Number(prompted) : null
+  });
+  showApptForm = false;
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
