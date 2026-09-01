@@ -181,12 +181,30 @@ Create a Next.js project (App Router, TypeScript) containing:
   future authentication insertion point.
 - SPEC.md copied into the project root.
 
+Pin dependency versions in package.json rather than installing "latest",
+and make sure the TypeScript version you pin is one the Next.js version you
+pin actually supports.
+
 Show me db/schema.ts, schema.sql, and db/seed.ts when done, and confirm the
 project installs and the seed runs cleanly in your environment.
 ```
 
 **What to check:** put db/schema.ts and schema.sql side by side with SPEC.md's table
 definitions. Three artifacts, one model — the spec discipline made visible.
+
+Also check the versions it pinned. As of 2026-09-01 a bare `npm install typescript`
+resolves to TypeScript 7, and **Next.js 15 refuses to build against it**:
+
+```
+TypeScript 7.0.2 is not supported by this version of Next.js. … Install
+TypeScript 6 (e.g. npm install --save-dev typescript@^6) or upgrade to a
+Next.js v16.2.11 or later
+```
+
+Verified on Next.js 15.5.25. It is a clean, self-explanatory error and Claude will
+usually fix it unprompted — but it lands in Prompt 6, which is the tightest block in
+the session. Cheaper to catch here. Re-check this pairing before each delivery; it is
+a fast-moving one.
 
 ---
 

@@ -22,6 +22,9 @@ skip ahead of a gate, even if you are confident. The user decides; you generate.
   filtering is later a small, local change; prefer schema conventions that make
   adding a `user_id` column a clean migration.
 - A re-runnable seed script that resets to a known state.
+- Pin dependency versions rather than installing "latest", and check that the pinned
+  TypeScript version is one the pinned Next.js version supports. (Next.js 15 rejects
+  TypeScript 7 outright.)
 - Keep the data model as small as the UI allows. Do not invent tables for features
   the UI does not have.
 

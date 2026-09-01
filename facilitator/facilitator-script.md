@@ -12,10 +12,12 @@ house answers — keep private), **SKILL.md** (capstone skill file).
    sideways, you hand them the checkpoint for their current stage and they continue.
 2. Verify the starter files render correctly: `pet-coach-starter-react.jsx` (primary)
    and `pet-coach-starter-plain.html` (conversion demo).
-3. Re-check two fast-moving facts the week before: whether Claude Code desktop
-   cloud sessions now support app preview (affects your Track B pitch), and the exact
+3. Re-check three fast-moving facts the week before: whether Claude Code desktop
+   cloud sessions now support app preview (affects your Track B pitch); the exact
    Settings path for enabling file creation in claude.ai (affects the pre-class
-   email). Update the handout if either has changed.
+   email); and the current Next.js / TypeScript version pairing (see Prompt 4's
+   "what to check" — as of 2026-09-01, TypeScript 7 breaks a Next.js 15 build).
+   Update the handout if any has changed.
 4. Send the pre-class email: self-triage questions, account requirement, the
    "make me a text file that says hello" verification test.
 5. Have the portable Node zip downloaded and staged for the after-class session.
@@ -136,6 +138,7 @@ method: spec first, gates always, verify at the end."
 | Artifact errors twice in a row | "Regenerate the artifact from SPEC.md from scratch." Storage code is the usual culprit; regeneration beats patching. |
 | Student far behind at a stage boundary | Hand them the golden checkpoint for that stage; they rejoin live. |
 | npm install slow in Prompt 6 | Expected (~1–3 min). Pre-planned talking gap: preview the capstone. |
+| Build fails on a TypeScript/Next.js version mismatch | Known: bare `npm install typescript` gets TS 7, which Next.js 15 rejects. "Pin typescript to ^6 and rebuild." Prompt 4 now asks for pins to prevent it. |
 | Verification thrashing (>3 fix loops) | Golden zip on screen; student retries their own after class. |
 | Whole-room platform issue | Fall back to your dry-run chat via screen share; students spectate, then re-run solo after class. |
 
