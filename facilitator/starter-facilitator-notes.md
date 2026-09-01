@@ -9,8 +9,8 @@ clarifying questions happen honestly, live, in front of the class.
 
 | File | Purpose |
 |---|---|
-| `pet-coach-starter-react.jsx` | Primary starter. Single-file React app, hardcoded sample data, local state only. Input to pipeline step 2 (analyze UI → propose schema). |
-| `pet-coach-starter-plain.html` | Same app in plain HTML/CSS/JS. Input to pipeline step 1 (normalize to React) for demonstrating the conversion path. |
+| `starters/pet-coach-starter-react.jsx` | Primary starter. Single-file React app, hardcoded sample data, local state only. Input to **Prompt 1** (analyze UI → propose schema). |
+| `starters/pet-coach-starter-plain.html` | Same app in plain HTML/CSS/JS. Input to **Prompt 0** (normalize to React) for demonstrating the conversion path, and to the capstone demo. |
 
 Both apps work when opened/rendered: you can browse pets, open a pet, log symptom
 reports, and schedule appointments. **Data disappears on refresh** — that is the
@@ -55,8 +55,18 @@ table's app converges (important for the facilitator being able to help debug).
 
 6. **Species is a dropdown (Dog/Cat/Rabbit/Other) with emoji avatars.** Fixed list or
    free text?
-   → *House answer: free TEXT (because of "Other"); emoji mapping stays a UI concern.
+   → *House answer: free TEXT, no CHECK constraint; emoji mapping stays a UI concern.
    Teaching point: not every UI dropdown is a database constraint.*
+   → **Be ready to be argued with here.** The obvious reason — "because of Other" —
+   does not survive scrutiny: there is no free-text species field anywhere in the
+   starter, so picking "Other" literally stores the string `"Other"`, and a
+   four-value CHECK constraint is a perfectly defensible read of this UI. Someone
+   technical will say so. The honest answer is about *rate of change*, not about the
+   UI: species is an open-ended real-world category, a CHECK constraint means a
+   migration every time the clinic sees a ferret, and the four options on screen are
+   a v1 shortcut rather than a business rule. Contrast it with urgency (ambiguity 2),
+   where the three values *are* the business rule and the constraint is right. That
+   contrast is the actual lesson; if the room finds it for you, let them.
 
 7. **Appointment "when" is a display string ("2026-08-20 · 10:30 AM").** Store as
    text or a real timestamp?

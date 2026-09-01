@@ -1,8 +1,12 @@
 # From Frontend to Full App — Facilitator Script
 
-Companion documents: **Pipeline Prompts** (canonical prompt text), **Student Handout**
-(participant-facing), **Starter Facilitator Notes** (the seven planted ambiguities and
-house answers — keep private), **SKILL.md** (capstone skill file).
+Companion documents: **Pipeline Prompts** (`student/pipeline-prompts.md`), **Student
+Handout** (`student/student-handout.md`), **Starter Facilitator Notes**
+(`facilitator/starter-facilitator-notes.md` — the seven planted ambiguities and house
+answers, keep private), **SKILL.md** (`skill/ui-to-database-app/SKILL.md`).
+
+Share `student/` and `starters/` with participants. Never share the repo root or
+`facilitator/` — the answer key to the question game lives there.
 
 ## Before the session (your prep checklist)
 
@@ -10,8 +14,8 @@ house answers — keep private), **SKILL.md** (capstone skill file).
    time. Save the outputs of every stage — these are your **golden checkpoints**:
    golden SPEC.md, golden artifact, golden project zip. If any student's thread goes
    sideways, you hand them the checkpoint for their current stage and they continue.
-2. Verify the starter files render correctly: `pet-coach-starter-react.jsx` (primary)
-   and `pet-coach-starter-plain.html` (conversion demo).
+2. Verify the starter files render correctly: `starters/pet-coach-starter-react.jsx`
+   (primary) and `starters/pet-coach-starter-plain.html` (conversion demo).
 3. Re-check three fast-moving facts the week before: whether Claude Code desktop
    cloud sessions now support app preview (affects your Track B pitch); the exact
    Settings path for enabling file creation in claude.ai (affects the pre-class
@@ -24,8 +28,21 @@ house answers — keep private), **SKILL.md** (capstone skill file).
 
 ## Timing plan (120 minutes)
 
-Buffer is built in at two places. If you're running long, the designated cut is the
-Prompt 0 demo (say it exists, skip the live run) and shortening artifact play time.
+**Read this before you rely on the clock: the segments below run 0:00→2:00 back to
+back, so there is no free slack anywhere.** The only give is *inside* segments — the
+5 minutes of artifact free play and the npm-install talking gap — which means any
+overrun is paid for out of teaching you have already promised. Decide the cut order
+now, not at 1:38:
+
+| If you're behind by | Cut |
+|---|---|
+| ~3 min | The Prompt 0 live demo (say it exists, show the file, move on) |
+| ~5 min | Artifact free play down to 2 minutes — keep the close-and-reopen kicker, it is the payoff |
+| ~8 min | The Prompt 5 side-by-side of `lib/client-db.ts` and the storage adapter. Say the sentence instead: "same function names, different backend." You lose the proof, not the point |
+| more than that | Skip your own live Prompt 6 and screen-share the golden zip's smoke-test output. Never cut the verification *story* — it is the segment that makes the rest credible |
+
+Prompt 6A is the tightest block: install, push, seed, start, CRUD across three
+entities, one end-to-end flow, and a restart check in 13 minutes. Assume it overruns.
 
 ### 0:00–0:10 — The problem statement
 Open the starter app. Click around as a pet owner: "Maple's been low-energy — log
@@ -117,12 +134,16 @@ intervene (golden zip) if it thrashes past ~3 fix attempts.
 ### 1:45–2:00 — Capstone: from pipeline to skill
 Frame: "You ran seven prompts and made maybe ten decisions. The prompts are now
 overhead — the decisions were the work. So let's make the prompts disappear." Show
-SKILL.md (from the workshop materials): walk the frontmatter and the workflow section
-— "it's the pipeline, written as instructions Claude follows on its own, gates
-included." Install it (claude.ai skills capability, or `~/.claude/skills/` for Claude
-Code users), then the mic-drop demo in a **fresh chat**: attach the plain-HTML
-starter and say only, "Turn this into a database-backed web app." Claude should walk
-the whole pipeline — asking the clarifying questions, pausing at the spec gate.
+SKILL.md (`skill/ui-to-database-app/SKILL.md`): walk the frontmatter and the workflow
+section — "it's the pipeline, written as instructions Claude follows on its own, gates
+included." Install it — claude.ai skills capability, or for Claude Code users copy the
+directory to `~/.claude/skills/ui-to-database-app/` (the folder name matters; the file
+inside must be `SKILL.md`). Then the mic-drop demo in a **fresh chat**: attach the
+plain-HTML starter and say only, "Turn this into a database-backed web app." Claude
+should walk the whole pipeline — asking the clarifying questions, pausing at the spec
+gate. If you are demoing in Claude Code rather than claude.ai, say up front that
+steps 3 and 6 adapt (no artifact, no zip — the skill's environment table covers it),
+so the difference reads as design rather than as the skill misfiring.
 
 Close with the roadmap: Track B tonight (run it locally), portable Node office hours,
 and the sequel — "that empty middleware.ts is an appointment we made with our future
