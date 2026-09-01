@@ -37,6 +37,19 @@ a `window.storage` adapter (artifact) and a `fetch` adapter calling the API rout
 (real app). Components must be identical in spirit across both — only the adapter
 differs.
 
+## Environment: adapt steps 3 and 6, never skip a gate
+
+Two steps depend on where you are running. Say which environment you are in before
+Step 3, and adapt rather than silently dropping a deliverable:
+
+| | claude.ai chat | Claude Code / local |
+|---|---|---|
+| Step 3 artifact | Build it — `window.storage` is available | No artifacts and no `window.storage`. Say so, and instead run the real app from Step 5 with the dev server and a browser preview. Offer the artifact if the user later opens a claude.ai chat. |
+| Step 6 packaging | Verify in the sandbox, deliver a zip | Verify by running it in the user's own workspace; the project directory *is* the deliverable. Only zip it if the user asks. |
+
+Everything else — the questions, the spec, the gates, the adapter architecture — is
+identical in both.
+
 ## Pipeline
 
 ### Step 0 — Normalize (only if the input is plain HTML)
@@ -66,6 +79,7 @@ Build a single-file React artifact: same UI, components calling the data interfa
 implemented by a `window.storage` adapter with graceful error handling. Seed storage
 on first run if empty; include a small "Reset demo data" control. Everything the
 interface defines must work, including update/delete.
+**GATE: let the user exercise the artifact and say it works before moving on.**
 
 ### Step 4 — Real project: database layer
 Generate the Next.js project skeleton with: `db/schema.ts` (Drizzle, matching SPEC.md
@@ -82,6 +96,7 @@ input validation and correct status codes (400 bad input, 404 missing record),
 returning exactly the SPEC's JSON shapes. Port the UI into the project using a
 `lib/client-db.ts` fetch adapter; add simple loading and error states; change the
 components as little as possible. Report what changed in the components.
+**GATE: show one route handler and the client adapter, and wait for review.**
 
 ### Step 6 — Verify and package
 In the execution environment: install, migrate/push, seed, start the dev server, then
