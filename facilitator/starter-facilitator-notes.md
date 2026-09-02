@@ -9,8 +9,8 @@ clarifying questions happen honestly, live, in front of the class.
 
 | File | Purpose |
 |---|---|
-| `pet-coach-starter-react.jsx` | Primary starter. Single-file React app, hardcoded sample data, local state only. Input to pipeline step 2 (analyze UI → propose schema). |
-| `pet-coach-starter-plain.html` | Same app in plain HTML/CSS/JS. Input to pipeline step 1 (normalize to React) for demonstrating the conversion path. |
+| `starters/pet-coach-starter-react.jsx` | Primary starter. Single-file React app, hardcoded sample data, local state only. Input to **Prompt 1** (analyze UI → propose schema). |
+| `starters/pet-coach-starter-plain.html` | Same app in plain HTML/CSS/JS. Input to **Prompt 0** (normalize to React) for demonstrating the conversion path, and to the capstone demo. |
 
 Both apps work when opened/rendered: you can browse pets, open a pet, log symptom
 reports, and schedule appointments. **Data disappears on refresh** — that is the
@@ -55,10 +55,20 @@ table's app converges (important for the facilitator being able to help debug).
 
 6. **Species is a dropdown (Dog/Cat/Rabbit/Other) with emoji avatars.** Fixed list or
    free text?
-   → *House answer: free TEXT (because of "Other"); emoji mapping stays a UI concern.
+   → *House answer: free TEXT, no CHECK constraint; emoji mapping stays a UI concern.
    Teaching point: not every UI dropdown is a database constraint.*
+   → **Be ready to be argued with here.** The obvious reason — "because of Other" —
+   does not survive scrutiny: there is no free-text species field anywhere in the
+   starter, so picking "Other" literally stores the string `"Other"`, and a
+   four-value CHECK constraint is a perfectly defensible read of this UI. Someone
+   technical will say so. The honest answer is about *rate of change*, not about the
+   UI: species is an open-ended real-world category, a CHECK constraint means a
+   migration every time the clinic sees a ferret, and the four options on screen are
+   a v1 shortcut rather than a business rule. Contrast it with urgency (ambiguity 2),
+   where the three values *are* the business rule and the constraint is right. That
+   contrast is the actual lesson; if the room finds it for you, let them.
 
-7. **Appointment "when" is a display string ("2026-08-20 · 10:30 AM").** Store as
+7. **Appointment "when" is a display string ("2026-09-14 · 10:30 AM").** Store as
    text or a real timestamp?
    → *House answer: real timestamp column; formatting is the UI's job. Teaching point:
    never store display strings.*
@@ -80,3 +90,18 @@ Maple's "low energy, skipped breakfast" report and the Dr. Patel sick visit are 
 from the journey deck, so the demo data will feel familiar to anyone who has seen your
 Pet Coach presentations. Biscuit the rabbit has no records — the empty states are
 intentional so the class sees them before and after wiring the database.
+
+**The sample dates expire — roll them forward before every delivery.** The two
+appointments marked "Upcoming" are hardcoded (currently 2026-09-14 and 2026-09-16),
+and once the class date passes them the app opens on an appointment marked Upcoming
+that already happened. That is not just untidy: it pre-empts ambiguity 5. The room is
+supposed to *argue* about whether status can be derived from the date and then be
+caught out by "Cancelled" — but a participant looking at a past-dated Upcoming record
+short-circuits it with "it obviously isn't derived", reaching the right answer from
+stale data instead of from the reasoning.
+
+Keep the shape when you shift them: reports a few days *before* class, the linked sick
+visits a couple of weeks *after*, and Maple's Completed wellness check and older limp
+report well in the past. Do not make the starter compute dates from `Date.now()` to
+avoid the chore — date arithmetic in the starter is a hint about how dates are stored,
+which is exactly what ambiguity 7 is testing.

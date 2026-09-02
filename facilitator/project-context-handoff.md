@@ -126,13 +126,13 @@ visit_type, scheduled_at, vet_name, status CHECK, timestamps).
 
 | File | Role |
 |---|---|
-| `pet-coach-starter-react.jsx` | Primary starter: single-file React, hardcoded nested data (reports/appointments nested inside pets — deliberate, so schema inference must normalize), local state only. |
-| `pet-coach-starter-plain.html` | Same app, vanilla HTML/CSS/JS — input for Prompt 0 and the capstone demo. |
-| `starter-facilitator-notes.md` | PRIVATE. The 7 ambiguities, house answers, target schema. |
-| `pipeline-prompts.md` | Canonical copy-paste prompts 0–6 (+6A/6B) with per-step "what to check" gates. Domain-agnostic wording. |
-| `student-handout.md` | Pre-class triage, account check ("make me a text file that says hello"), track table, session narrative, adapter diagram, troubleshooting, after-class paths. |
-| `facilitator-script.md` | Minute-by-minute 120-min plan, talking points, question-game mechanics, recovery playbook keyed to "golden checkpoints" (facilitator dry-runs pipeline twice, saves every stage output), 3 verbatim closing lines. Designated cut if long: the Prompt 0 demo. |
-| `ui-to-database-app-SKILL.md` | Capstone skill: the whole pipeline as an autonomous Claude skill with approval gates preserved. Finale demo: fresh chat + HTML starter + one sentence. |
+| `starters/pet-coach-starter-react.jsx` | Primary starter: single-file React, hardcoded nested data (reports/appointments nested inside pets — deliberate, so schema inference must normalize), local state only. |
+| `starters/pet-coach-starter-plain.html` | Same app, vanilla HTML/CSS/JS — input for Prompt 0 and the capstone demo. |
+| `facilitator/starter-facilitator-notes.md` | PRIVATE. The 7 ambiguities, house answers, target schema. |
+| `student/pipeline-prompts.md` | Canonical copy-paste prompts 0–6 (+6A/6B) with per-step "what to check" gates. Domain-agnostic wording. |
+| `student/student-handout.md` | Pre-class triage, account check ("make me a text file that says hello"), track table, session narrative, adapter diagram, troubleshooting, after-class paths. |
+| `facilitator/facilitator-script.md` | Minute-by-minute 120-min plan, talking points, question-game mechanics, recovery playbook keyed to "golden checkpoints" (facilitator dry-runs pipeline twice, saves every stage output), 3 verbatim closing lines. Designated cut if long: the Prompt 0 demo. |
+| `skill/ui-to-database-app/SKILL.md` | Capstone skill: the whole pipeline as an autonomous Claude skill with approval gates preserved. Finale demo: fresh chat + HTML starter + one sentence. |
 
 ## 7. Current status and next steps
 
@@ -140,9 +140,11 @@ visit_type, scheduled_at, vet_name, status CHECK, timestamps).
 prompts, student handout, facilitator script, capstone SKILL.md.
 
 **Next steps (agreed or implied):**
-1. Terry assembles everything into a GitHub repo (structure TBD — a sensible layout
-   discussion may be a good first task in the resumed chat, e.g. `starters/`,
-   `prompts/`, `handouts/`, `skill/ui-to-database-app/SKILL.md`).
+1. ~~Terry assembles everything into a GitHub repo (structure TBD).~~ **Done** —
+   `starters/`, `student/`, `facilitator/`, `skill/ui-to-database-app/SKILL.md`. The
+   student/facilitator split is load-bearing, not cosmetic: the planted-ambiguity
+   answers must not sit in a directory the handout sends students to. Share deep
+   links to `student/` and `starters/`, never the repo root.
 2. **Dry-run the full pipeline** with the exact prompts against the React starter
    (twice) to (a) harden any prompt that generates inconsistently — bring failures
    back to Claude to tighten wording — and (b) produce the golden checkpoints
