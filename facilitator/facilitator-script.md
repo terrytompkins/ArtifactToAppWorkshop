@@ -21,10 +21,13 @@ Share `student/` and `starters/` with participants. Never share the repo root or
    `facilitator/starter-facilitator-notes.md` for why this matters beyond tidiness —
    stale dates pre-empt planted ambiguity 5.
 4. **Confirm the artifact storage API still works as Prompt 3 assumes.** Prompt 3 and
-   SKILL.md both name `window.storage`. Two-minute test: in a claude.ai chat, ask for
-   an artifact that saves a value and reads it back after a reload. If the identifier
-   has moved, Prompt 3 fails at minute 45 and the artifact deliverable — the whole
-   universal track — goes with it. Do this every time, not once.
+   SKILL.md both name `window.storage`. **Confirmed working in a full dry-run on
+   2026-09-01** — records survived closing and reopening the conversation. Keep
+   checking it anyway: the identifier is not publicly documented, so it can move
+   without a deprecation notice, and if it does, Prompt 3 fails at minute 45 and the
+   artifact deliverable — the whole universal track — goes with it. Two-minute test:
+   in a claude.ai chat, ask for an artifact that saves a value and reads it back
+   after a reload.
 5. Re-check three fast-moving facts the week before: whether Claude Code desktop
    cloud sessions now support app preview (affects your Track B pitch); the exact
    Settings path for enabling file creation in claude.ai (affects the pre-class
