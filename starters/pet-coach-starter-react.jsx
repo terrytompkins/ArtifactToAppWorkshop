@@ -26,7 +26,7 @@ const initialPets = [
     reports: [
       {
         id: 101,
-        date: "2026-08-18",
+        date: "2026-08-28",
         symptoms:
           "Low energy and eating less than usual. Skipped breakfast. No vomiting, drinking normally.",
         duration: "About 24 hours",
@@ -44,7 +44,7 @@ const initialPets = [
       {
         id: 201,
         visitType: "Sick visit",
-        when: "2026-08-20 · 10:30 AM",
+        when: "2026-09-14 · 10:30 AM",
         vet: "Dr. Patel",
         status: "Upcoming",
         promptedBy: 101,
@@ -68,7 +68,7 @@ const initialPets = [
     reports: [
       {
         id: 103,
-        date: "2026-08-15",
+        date: "2026-08-26",
         symptoms: "Coughing more than usual, especially in the evening.",
         duration: "4 days",
         urgency: "Moderate",
@@ -78,7 +78,7 @@ const initialPets = [
       {
         id: 203,
         visitType: "Sick visit",
-        when: "2026-08-25 · 2:15 PM",
+        when: "2026-09-16 · 2:15 PM",
         vet: "Dr. Patel",
         status: "Upcoming",
         promptedBy: 103,
@@ -290,7 +290,7 @@ function AppointmentForm({ reports, onAdd, onClose }) {
         </select>
         <input
           className="rounded-lg border border-teal-200 bg-white px-3 py-2 text-sm"
-          placeholder="When (e.g. 2026-09-02 · 9:00 AM)"
+          placeholder="When (e.g. 2026-09-25 · 9:00 AM)"
           value={when}
           onChange={(e) => setWhen(e.target.value)}
         />

@@ -16,15 +16,24 @@ Share `student/` and `starters/` with participants. Never share the repo root or
    sideways, you hand them the checkpoint for their current stage and they continue.
 2. Verify the starter files render correctly: `starters/pet-coach-starter-react.jsx`
    (primary) and `starters/pet-coach-starter-plain.html` (conversion demo).
-3. Re-check three fast-moving facts the week before: whether Claude Code desktop
+3. **Roll the sample dates forward in both starters** so the two "Upcoming"
+   appointments are still in the future on class day. See the sample-data note in
+   `facilitator/starter-facilitator-notes.md` for why this matters beyond tidiness —
+   stale dates pre-empt planted ambiguity 5.
+4. **Confirm the artifact storage API still works as Prompt 3 assumes.** Prompt 3 and
+   SKILL.md both name `window.storage`. Two-minute test: in a claude.ai chat, ask for
+   an artifact that saves a value and reads it back after a reload. If the identifier
+   has moved, Prompt 3 fails at minute 45 and the artifact deliverable — the whole
+   universal track — goes with it. Do this every time, not once.
+5. Re-check three fast-moving facts the week before: whether Claude Code desktop
    cloud sessions now support app preview (affects your Track B pitch); the exact
    Settings path for enabling file creation in claude.ai (affects the pre-class
    email); and the current Next.js / TypeScript version pairing (see Prompt 4's
    "what to check" — as of 2026-09-01, TypeScript 7 breaks a Next.js 15 build).
    Update the handout if any has changed.
-4. Send the pre-class email: self-triage questions, account requirement, the
+6. Send the pre-class email: self-triage questions, account requirement, the
    "make me a text file that says hello" verification test.
-5. Have the portable Node zip downloaded and staged for the after-class session.
+7. Have the portable Node zip downloaded and staged for the after-class session.
 
 ## Timing plan (120 minutes)
 
@@ -157,6 +166,7 @@ method: spec first, gates always, verify at the end."
 | Claude generated code at the analysis step | Student replies: "Stop — ask your clarifying questions first." Works nearly always. |
 | Schema diverged badly from house model | Paste golden SPEC.md: "Use this as the approved spec, continue from Prompt 3." |
 | Artifact errors twice in a row | "Regenerate the artifact from SPEC.md from scratch." Storage code is the usual culprit; regeneration beats patching. |
+| Artifact storage fails for the *whole room* | The `window.storage` API has moved. Not recoverable live. Say so plainly, drop to in-memory state for the free-play segment ("this is the version that forgets — which is the point"), and carry on to Prompt 4. Prep item 4 exists to stop you finding out here. |
 | Student far behind at a stage boundary | Hand them the golden checkpoint for that stage; they rejoin live. |
 | npm install slow in Prompt 6 | Expected (~1–3 min). Pre-planned talking gap: preview the capstone. |
 | Build fails on a TypeScript/Next.js version mismatch | Known: bare `npm install typescript` gets TS 7, which Next.js 15 rejects. "Pin typescript to ^6 and rebuild." Prompt 4 now asks for pins to prevent it. |

@@ -119,7 +119,9 @@ PostgreSQL, and add authentication, without rewriting the UI.
 - **Track B:** unzip your app, and either run it with Claude Code (it can install,
   seed, launch, and preview it for you — note your machine still needs Node.js to run
   the app itself) or run it by hand: `npm install`, `npm run db:push`,
-  `npm run db:seed`, `npm run dev`.
+  `npm run db:seed`, `npm run dev`. If `db:push` isn't there, check your
+  `package.json` scripts — Claude may have generated `db:migrate` instead; either
+  is fine, the pipeline permits both.
 - **Portable Node track:** see the facilitator for the no-admin-rights Node setup.
 - **The sequel:** adding sign-in (SSO via Auth.js, e.g. Microsoft Entra ID) is a
   clean bolt-on by design — the empty middleware.ts in your project marks the exact
