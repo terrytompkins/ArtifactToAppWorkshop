@@ -81,11 +81,9 @@ tables for features the UI doesn't have.
 Wait for my answers to your questions before proposing the final schema.
 ```
 
-**What to check:** Claude should ask most or all of the planted questions (age vs.
-birthdate, urgency enum, vet as column vs. table, the optional report link, stored vs.
-derived status, species list, the date display string). Answer them using the house
-answers in the facilitator notes. If Claude missed one, ask it: "What about the way
-age is displayed — is that the right thing to store?"
+**What to check:** Claude should come back with clarifying questions, not code. Discuss
+each one as a class and agree on an answer together before moving on. If Claude missed
+one, ask it: "What about the way age is displayed — is that the right thing to store?"
 
 ---
 
@@ -122,8 +120,9 @@ code until I approve the spec.
 ```
 
 **What to check:** read SPEC.md aloud with the class — this is the contract. Confirm
-the three tables match the target schema in the facilitator notes. Approve explicitly
-("SPEC approved, continue") so the approval gate is visible as a practice.
+it covers pets, symptom reports, and appointments, with tables, an API list, and seed
+data. Approve explicitly ("SPEC approved, continue") so the approval gate is visible
+as a practice.
 
 ---
 
