@@ -10,7 +10,7 @@ clarifying questions happen honestly, live, in front of the class.
 | File | Purpose |
 |---|---|
 | `starters/pet-coach-starter-react.jsx` | Primary starter. Single-file React app, hardcoded sample data, local state only. Input to **Prompt 1** (analyze UI → propose schema). |
-| `starters/pet-coach-starter-plain.html` | Same app in plain HTML/CSS/JS. Input to **Prompt 0** (normalize to React) for demonstrating the conversion path, and to the capstone demo. |
+| `starters/pet-coach-starter-plain.html` | Same app in plain HTML/CSS/JS. Input to **Prompt 0B** (normalize to React) for demonstrating the conversion path, and to the capstone demo. Also the reference build students switch to after the optional Prompt 0A idea-to-prototype warm-up. |
 
 Both apps work when opened/rendered: you can browse pets, open a pet, log symptom
 reports, and schedule appointments. **Data disappears on refresh** — that is the
@@ -22,6 +22,21 @@ This is "Pet Coach before the AI" — the record-keeping v1 underneath the full 
 vision shown in the journey deck. Three concepts on screen: **Pets**, **Symptom
 Reports**, **Appointments**. No AI triage, no clinic integration, no auth. One implicit
 owner, one implicit clinic (Westside Clinic exists only in flavor text).
+
+## If you're running the Prompt 0A warm-up
+
+Prompt 0A (`student/pipeline-prompts.md`) has students generate their own
+from-scratch prototype before ever touching today's starter. It writes a different
+file — never this one — and it is fine, expected even, for it to diverge from the
+ambiguities below; every group's brief-to-prototype pass will land slightly
+differently, and that variance is the point of the exercise, not a bug in it.
+
+Do not let it become a preview of this document. If the room stumbles into one of the
+seven ambiguities early ("wait, should age be a birthdate?"), do not resolve it during
+the warm-up — defer it per the guardrail in `facilitator/facilitator-script.md`
+("hold that thought, we'll come back to it") and keep the reveal for Prompt 1's
+question game, where it belongs. The ambiguities and house answers below are
+unaffected by whatever Prompt 0A produces.
 
 ## Deliberate ambiguities and house answers
 

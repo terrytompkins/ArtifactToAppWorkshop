@@ -127,11 +127,11 @@ visit_type, scheduled_at, vet_name, status CHECK, timestamps).
 | File | Role |
 |---|---|
 | `starters/pet-coach-starter-react.jsx` | Primary starter: single-file React, hardcoded nested data (reports/appointments nested inside pets — deliberate, so schema inference must normalize), local state only. |
-| `starters/pet-coach-starter-plain.html` | Same app, vanilla HTML/CSS/JS — input for Prompt 0 and the capstone demo. |
+| `starters/pet-coach-starter-plain.html` | Same app, vanilla HTML/CSS/JS — input for Prompt 0B and the capstone demo. |
 | `facilitator/starter-facilitator-notes.md` | PRIVATE. The 7 ambiguities, house answers, target schema. |
 | `student/pipeline-prompts.md` | Canonical copy-paste prompts 0–6 (+6A/6B) with per-step "what to check" gates. Domain-agnostic wording. |
 | `student/student-handout.md` | Pre-class triage, account check ("make me a text file that says hello"), track table, session narrative, adapter diagram, troubleshooting, after-class paths. |
-| `facilitator/facilitator-script.md` | Minute-by-minute 120-min plan, talking points, question-game mechanics, recovery playbook keyed to "golden checkpoints" (facilitator dry-runs pipeline twice, saves every stage output), 3 verbatim closing lines. Designated cut if long: the Prompt 0 demo. |
+| `facilitator/facilitator-script.md` | Minute-by-minute 120-min plan, talking points, question-game mechanics, recovery playbook keyed to "golden checkpoints" (facilitator dry-runs pipeline twice, saves every stage output), 3 verbatim closing lines. Designated cut if long: the Prompt 0B demo. |
 | `skill/ui-to-database-app/SKILL.md` | Capstone skill: the whole pipeline as an autonomous Claude skill with approval gates preserved. Finale demo: fresh chat + HTML starter + one sentence. |
 
 ## 7. Current status and next steps

@@ -40,11 +40,18 @@ and is domain-agnostic — point it at any frontend.
 | File | Role |
 |---|---|
 | `starters/pet-coach-starter-react.jsx` | Primary starter. Single-file React with Tailwind classes, sample data hardcoded and *nested* (reports and appointments inside pets), local state only. Input to Prompt 1. |
-| `starters/pet-coach-starter-plain.html` | The same app in vanilla HTML/CSS/JS, no build step — open it in a browser. Input to Prompt 0 (the "convert it to React first" on-ramp) and to the capstone demo. |
+| `starters/pet-coach-starter-plain.html` | The same app in vanilla HTML/CSS/JS, no build step — open it in a browser. Input to Prompt 0B (the "convert it to React first" on-ramp) and to the capstone demo. |
 
 Both are deliberately "innocent": no data layer, no comments hinting at a schema, so
 Claude's analysis and questions happen honestly in front of the room. Keep it that way
 when editing them.
+
+**Where this starter itself came from:** `student/pipeline-prompts.md` now opens with
+an optional Prompt 0A — a two-pass "idea to prototype" exercise showing how a plain-
+language brief becomes a clickable prototype like this one. It produces a fresh file
+of the student's own; it never overwrites either starter above. After the exercise,
+everyone switches to the shared starters here so the rest of the pipeline stays in
+sync.
 
 ## Before you run it
 

@@ -37,6 +37,10 @@ Share `student/` and `starters/` with participants. Never share the repo root or
 6. Send the pre-class email: self-triage questions, account requirement, the
    "make me a text file that says hello" verification test.
 7. Have the portable Node zip downloaded and staged for the after-class session.
+8. If you're running the optional Prompt 0A warm-up, dry-run it once yourself and
+   keep the output as a golden reference — not to force convergence (every group's
+   prototype will differ, on purpose), but so you have something to show if you'd
+   rather narrate a pre-made example than live-type it.
 
 ## Timing plan (120 minutes)
 
@@ -48,13 +52,38 @@ now, not at 1:38:
 
 | If you're behind by | Cut |
 |---|---|
-| ~3 min | The Prompt 0 live demo (say it exists, show the file, move on) |
+| ~3 min | The Prompt 0B live demo (say it exists, show the file, move on) |
 | ~5 min | Artifact free play down to 2 minutes — keep the close-and-reopen kicker, it is the payoff |
 | ~8 min | The Prompt 5 side-by-side of `lib/client-db.ts` and the storage adapter. Say the sentence instead: "same function names, different backend." You lose the proof, not the point |
 | more than that | Skip your own live Prompt 6 and screen-share the golden zip's smoke-test output. Never cut the verification *story* — it is the segment that makes the rest credible |
 
 Prompt 6A is the tightest block: install, push, seed, start, CRUD across three
 entities, one end-to-end flow, and a restart check in 13 minutes. Assume it overruns.
+
+### Optional, before the clock starts — Prompt 0A: from idea to prototype
+
+Not part of the 120-minute budget above and not required for anything downstream —
+run it only if you have the room for it, and it's fine to let the session run long
+that day. Adds roughly 15–20 minutes.
+
+Open a brand-new chat, no attachments, and type Prompt 0A's Pass 1 live: a few plain
+sentences describing Pet Care Coach as an idea, nothing more. Let the room watch
+Claude fill in the blanks — what a pet record needs, what "urgency" looks like. Then
+run Pass 2, adding the fuller brief from the prompt sheet. **Talking point:** "Every
+one of you could type this same brief right now and get a slightly different file
+back — and that's fine. What matters is that ten minutes ago there was no app, and
+now there's a clickable one. This is where today's starter came from."
+
+**Guardrail:** if someone raises one of the seven planted ambiguities during this
+exercise ("wait, should age be a birthdate?"), do not resolve it here. Say "hold that
+thought, we'll come back to it in twenty minutes" and keep moving — Prompt 1's
+question game is where those get answered on purpose, and answering early spoils it.
+
+**What to check:** the generated prototype opens, the sample data renders, and adding
+a record then refreshing loses it — the same motivating gap as the main starter.
+Then, per Prompt 0A's own closing instruction, switch everyone to the shared
+`starters/pet-coach-starter-plain.html` (or the React starter) before Prompt 1 —
+that's what keeps the room's ambiguity-hunt in sync.
 
 ### 0:00–0:10 — The problem statement
 Open the starter app. Click around as a pet owner: "Maple's been low-energy — log
@@ -72,7 +101,7 @@ session). Then show the pipeline table from Pipeline Prompts. **Talking point:**
 prompts matter less than the gates. You are the approval step. AI does the typing;
 you do the deciding."
 
-Optional 3-minute demo: Prompt 0 on the plain-HTML starter, mostly to say "if what
+Optional 3-minute demo: Prompt 0B on the plain-HTML starter, mostly to say "if what
 you have is old-school HTML, the pipeline has an on-ramp."
 
 ### 0:18–0:35 — Prompt 1: analysis and the question game
@@ -166,6 +195,7 @@ method: spec first, gates always, verify at the end."
 
 | Symptom | Move |
 |---|---|
+| Prompt 0A prototype breaks or looks nothing like the brief | Don't debug it live — it's a warm-up, not a deliverable. Say so, switch to the shared starter, and move on. |
 | Claude generated code at the analysis step | Student replies: "Stop — ask your clarifying questions first." Works nearly always. |
 | Schema diverged badly from house model | Paste golden SPEC.md: "Use this as the approved spec, continue from Prompt 3." |
 | Artifact errors twice in a row | "Regenerate the artifact from SPEC.md from scratch." Storage code is the usual culprit; regeneration beats patching. |
