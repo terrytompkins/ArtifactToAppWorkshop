@@ -9,11 +9,16 @@ The prompts are domain-agnostic on purpose: they refer to "the frontend I've pro
 so they work with the Pet Care Coach starter *or* any frontend a student brings. This
 is the point of the pipeline — it's a reusable workflow, not a Pet Coach recipe.
 
+Prompt 0A is the one exception to "the frontend I've provided": it's the step before
+there is a frontend at all. Everything from Prompt 0B on assumes one already exists —
+whether that's today's starter or something you bring from home.
+
 **Sequence at a glance**
 
 | # | Prompt | Gate before continuing |
 |---|--------|------------------------|
-| 0 | (Optional) Normalize plain HTML to React | Converted app looks/behaves the same |
+| 0A | (Optional) From idea to prototype | Prototype opens; sample data renders; refresh clears it |
+| 0B | (Optional) Normalize plain HTML to React | Converted app looks/behaves the same |
 | 1 | Analyze UI, propose data model, ask questions | Claude asked questions; class answers them |
 | 2 | Confirm schema, produce SPEC.md | Human approves SPEC.md |
 | 3 | Build the interactive artifact app | Students click around their working app |
@@ -23,7 +28,96 @@ is the point of the pipeline — it's a reusable workflow, not a Pet Coach recip
 
 ---
 
-## Prompt 0 (optional) — Normalize plain HTML to React
+## Prompt 0A — From idea to prototype (optional origin story)
+
+This is the step *before* Prompt 0B: how do you get a clickable frontend to start
+from in the first place? Run it in a brand-new chat, no attachments. It's two passes
+on purpose — a rough one, then a refinement — because that back-and-forth *is* the
+skill being taught here, not a single perfect prompt.
+
+### Pass 1 — the rough idea
+
+```
+I have an idea for a small web app called Pet Care Coach. It's a simple
+health-record tracker for pet owners: for each pet you can log a symptom
+report when something seems off, and schedule vet appointments. I want to
+see it before I invest any more thought into it.
+
+Build me a quick clickable prototype as a single, self-contained HTML file
+(inline CSS and JS, no build step, no backend) that I can just open in a
+browser. Make up a couple of sample pets and some sample data so it
+doesn't look empty. It's fine if everything resets on refresh — I just
+want to see the idea, not build the real thing yet.
+```
+
+**What to check:** open the file Claude hands back. Notice how much it decided on
+your behalf — what fields a pet has, what "urgency" looks like, whether there's a
+modal or an inline form. That is what a rough prompt buys you: something to react to,
+fast, with every unstated choice now sitting in front of you to keep or override.
+Talk as a class about what you'd change before moving on.
+
+### Pass 2 — leveling up the brief
+
+Same chat, same file — don't start over, add detail to what is already there. This is
+the natural next move once a rough pass exists.
+
+```
+This is a good start. Let's make it feel more real. Keep it a single HTML
+file with everything inline — still no backend, no persistence, still fine
+if it resets on refresh.
+
+The app is called "Pet Care Coach" — a small paw-print mark, a clean teal
+accent color, card-based layout, all on one page.
+
+Screen 1: a list of pets as cards — an avatar (an emoji for the species),
+the name, species/breed/age on one line, and a small count of how many
+symptom reports and appointments each pet has. A "+ Add pet" button up top.
+
+Screen 2 (click a pet to get here): the pet's name and details up top, then
+two columns side by side — "Symptom log" and "Appointments" — each with
+its own "+" button to add a new one, and a friendly empty-state message
+when there's nothing logged yet.
+
+For each pet, track: name, species (Dog / Cat / Rabbit / Other, shown with
+a matching emoji), breed, and age (just show it like "6y").
+
+For each symptom report: a date, a free-text description of what was
+noticed, roughly how long it's been going on, and an urgency shown as a
+colored tag — Low, Moderate, or High.
+
+For each appointment: a visit type (Wellness check / Sick visit /
+Same-day urgent visit / Follow-up visit), a "when" shown as a friendly
+date-and-time string, the vet's name, and a status tag — Upcoming or
+Completed. When an appointment was scheduled because of a specific
+symptom report, show a small note on the appointment saying which report
+prompted it.
+
+Give me three sample pets: a dog named Maple (Lab mix, 6y) with a recent
+symptom report (low energy, skipped breakfast) and an older one (a mild
+limp), plus two appointments — an upcoming sick visit tied to the recent
+report, and a past, completed wellness check; a cat named Juniper
+(domestic shorthair, 3y) with one recent symptom report and one upcoming
+appointment tied to it; and a rabbit named Biscuit (Holland Lop, 2y) with
+nothing logged yet, so I can see what the empty states look like.
+
+Add a short footer noting this is a fictional product for demo purposes,
+not a substitute for real veterinary care.
+```
+
+**What to check:** click through both pets with data, then Biscuit's empty one. Add a
+report, add an appointment, then refresh the page and watch it all disappear — the
+same motivating gap the rest of today is built to close, except this time you know
+exactly how it was built, because you just built it. However this particular file
+turned out is genuinely yours; every group's version will differ in the details, the
+way two builders working from the same verbal brief put up two different houses.
+**For the rest of today, so everyone is looking at the same ambiguities in the
+exercises ahead, switch to the shared reference build:** open
+`starters/pet-coach-starter-plain.html`. Notice nobody has told you yet what it does —
+you already know, because you just described it yourself.
+
+---
+
+## Prompt 0B (optional) — Normalize plain HTML to React
 
 Use only if the starting frontend is plain HTML/CSS/JS. Attach or paste the HTML file.
 
@@ -51,7 +145,7 @@ specific differences — this is a good first taste of iterative correction.
 
 ## Prompt 1 — Analyze the UI and propose a data model (no code!)
 
-Attach or paste the React frontend (the starter, or the output of Prompt 0).
+Attach or paste the React frontend (the starter, or the output of Prompt 0B).
 
 ```
 I want to turn this frontend into a database-backed web application. You are

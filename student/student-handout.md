@@ -1,7 +1,8 @@
 # From Frontend to Full App — Student Handout
 
 **Workshop:** Turning a Claude-built UI into a database-backed web application
-**Length:** 2 hours · **You need:** a browser and a Claude account (details below)
+**Length:** 2 hours (some sessions add a 15–20 minute optional warm-up first) ·
+**You need:** a browser and a Claude account (details below)
 
 ## What you'll walk away with
 
@@ -46,6 +47,12 @@ and approves before generation continues. That review-then-generate rhythm — n
 single prompt — is the skill this workshop teaches.
 
 ## Session flow
+
+**0. (Optional) From idea to prototype.** If your session includes it, before you ever
+see today's starter app, you'll watch — or try yourself — how a plain-language idea
+becomes a clickable HTML prototype in two rounds of prompting. This is the step before
+everything else here: the starter app the rest of this handout uses was built exactly
+this way.
 
 **1. Meet the starter app.** Pet Care Coach v1: pets, symptom reports, appointments.
 Click around. Add a record. Refresh. Watch it vanish. That's the problem statement.
