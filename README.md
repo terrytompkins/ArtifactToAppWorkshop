@@ -22,6 +22,7 @@ artifact and once as a real, verified Next.js project.
 | `student/` | participants | `student-handout.md` (pre-class triage, session narrative, troubleshooting) and `pipeline-prompts.md` (the canonical prompts 0–6, copy-paste ready). |
 | `facilitator/` | **private** | `facilitator-script.md` (minute-by-minute plan, recovery playbook), `starter-facilitator-notes.md` (the seven planted ambiguities and house answers), `project-context-handoff.md` (design decisions and their rationale). |
 | `skill/ui-to-database-app/` | everyone, at the end | The capstone: the whole pipeline packaged as a Claude skill. |
+| `presentation/` | everyone | A 20-minute Reveal.js overview of the workshop for people who missed it — the pipeline, the gates, and what each prompt produced. Shows three of the seven planted ambiguities; withholds the rest. Open `presentation/index.html`. |
 
 ## Reading order
 
@@ -34,6 +35,9 @@ ambiguities → `student/pipeline-prompts.md` for what you will actually paste �
 
 **Just want the reusable part?** `skill/ui-to-database-app/SKILL.md`. It stands alone
 and is domain-agnostic — point it at any frontend.
+
+**Missed the workshop, or introducing it to a room?** `presentation/index.html` — a
+20-minute walkthrough, no prompting required.
 
 ## The starters
 
