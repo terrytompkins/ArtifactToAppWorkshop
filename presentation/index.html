@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artifact to App — 20-minute overview (PromptlyAt9)</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/theme/white.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/plugin/highlight/monokai.css">
+
+  <style>
+    :root {
+      --teal: #0d9488;
+      --teal-dark: #0f766e;
+      --teal-soft: #ccfbf1;
+      --teal-faint: #f0fdfa;
+      --ink: #111827;
+      --muted: #6b7280;
+      --faint: #9ca3af;
+      --amber: #b45309;
+      --amber-soft: #fef3c7;
+      --r-main-font: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --r-heading-font: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --r-main-color: var(--ink);
+      --r-heading-color: var(--ink);
+      --r-link-color: var(--teal-dark);
+      --r-link-color-hover: var(--teal);
+      --r-main-font-size: 34px;
+      --r-heading1-size: 2.1em;
+      --r-heading2-size: 1.45em;
+      --r-heading3-size: 1.05em;
+      --r-code-font: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .reveal { background: linear-gradient(to bottom, var(--teal-faint), #ffffff 320px); }
+    .reveal h1, .reveal h2, .reveal h3 { text-transform: none; letter-spacing: -0.02em; font-weight: 700; }
+    .reveal h2 { margin-bottom: 0.5em; }
+    .reveal .slides section { text-align: left; }
+    .reveal .slides section.center-slide { text-align: center; }
+    .reveal p { line-height: 1.35; }
+    .reveal ul { margin-left: 1em; }
+    .reveal li { margin-bottom: 0.35em; line-height: 1.3; }
+    .reveal .muted { color: var(--muted); }
+    .reveal .small { font-size: 0.7em; }
+    .reveal .tiny { font-size: 0.55em; }
+    .reveal strong { color: var(--teal-dark); }
+
+    .kicker {
+      font-size: 0.5em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--teal); margin-bottom: 0.4em;
+    }
+
+    /* timing chip in the corner of each slide */
+    .reveal section[data-minutes]::after {
+      content: "≈ " attr(data-minutes) " min";
+      position: absolute; right: 0; top: -14px;
+      font-size: 0.42em; font-weight: 600; color: var(--teal-dark);
+      background: var(--teal-soft); border-radius: 999px; padding: 4px 12px;
+    }
+
+    /* the paw mark */
+    .paw {
+      display: inline-flex; width: 1.4em; height: 1.4em; border-radius: 0.35em;
+      background: var(--teal); color: #fff; align-items: center; justify-content: center;
+      font-size: 0.9em; vertical-align: middle; margin-right: 0.3em;
+    }
+
+    /* code */
+    .reveal pre { width: 100%; box-shadow: none; margin: 0.3em 0; font-size: 0.5em; }
+    .reveal pre code { padding: 14px 16px; border-radius: 10px; line-height: 1.4; max-height: 520px; }
+    .reveal .two-col { display: flex; gap: 1.2em; align-items: flex-start; }
+    .reveal .two-col > * { flex: 1 1 0; min-width: 0; }
+    .reveal .two-col.wide-left > *:first-child { flex: 1.35; }
+    .reveal .two-col.dense pre { font-size: 0.42em; }
+    .reveal .two-col.dense pre code { line-height: 1.32; }
+    .reveal .two-col.dense pre code { padding: 10px 12px; }
+    .caption { font-size: 0.55em; color: var(--muted); margin: 0.2em 0 0.1em; }
+    .caption code { color: var(--teal-dark); font-size: 0.95em; }
+    .reveal code:not(pre code) { font-family: var(--r-code-font); font-size: 0.85em; color: var(--teal-dark); background: var(--teal-faint); padding: 0.05em 0.3em; border-radius: 4px; }
+
+    /* prompt quote */
+    .prompt {
+      font-family: var(--r-code-font); font-size: 0.55em; line-height: 1.45;
+      background: #fff; border: 1px solid #e5e7eb; border-left: 6px solid var(--teal);
+      border-radius: 8px; padding: 0.8em 1em; color: #1f2937; white-space: pre-wrap;
+    }
+    .prompt .em { background: var(--teal-soft); border-radius: 3px; padding: 0 2px; }
+
+    /* callout */
+    .callout {
+      background: var(--amber-soft); border-left: 6px solid var(--amber); border-radius: 8px;
+      padding: 0.5em 0.8em; font-size: 0.7em; color: #78350f;
+    }
+    .callout.teal { background: var(--teal-soft); border-color: var(--teal); color: var(--teal-dark); }
+
+    /* pipeline diagram */
+    .pipeline { display: flex; align-items: stretch; gap: 0; margin: 0.4em 0; font-size: 0.55em; }
+    .pipeline .step {
+      flex: 1; background: #fff; border: 2px solid var(--teal); border-radius: 12px;
+      padding: 0.5em 0.6em; text-align: center; position: relative;
+    }
+    .pipeline .step .n { display: block; font-size: 0.75em; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.08em; }
+    .pipeline .step .t { display: block; font-weight: 700; line-height: 1.2; margin-top: 0.15em; }
+    .pipeline .step .s { display: block; font-size: 0.8em; color: var(--muted); line-height: 1.2; margin-top: 0.2em; }
+    .pipeline .step.dim { border-color: #d1d5db; }
+    .pipeline .step.dim .n { color: var(--faint); }
+    .pipeline .gate {
+      width: 4.6em; flex: 0 0 4.6em; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--amber); font-weight: 700; font-size: 0.8em;
+    }
+    .pipeline .gate .icon { font-size: 1.5em; line-height: 1; }
+    .pipeline .gate .lbl { font-size: 0.72em; text-align: center; line-height: 1.1; margin-top: 0.2em; }
+    .pipeline .arrow { width: 1.4em; display: flex; align-items: center; justify-content: center; color: var(--faint); font-size: 1.4em; }
+
+    /* stage banner used on each prompt slide */
+    .stage { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.4em; }
+    .stage .badge {
+      background: var(--teal); color: #fff; font-weight: 700; border-radius: 999px;
+      padding: 0.15em 0.7em; font-size: 0.55em; white-space: nowrap;
+    }
+    .stage .gatebadge {
+      background: var(--amber-soft); color: var(--amber); font-weight: 700; border-radius: 999px;
+      padding: 0.15em 0.7em; font-size: 0.5em; margin-left: auto; white-space: nowrap;
+    }
+    .stage h2 { margin: 0; }
+
+    /* adapter diagram */
+    .adapter { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em 1.2em; font-size: 0.6em; margin-top: 0.4em; }
+    .adapter .box { background: #fff; border: 2px solid var(--teal); border-radius: 12px; padding: 0.6em 0.9em; text-align: center; }
+    .adapter .box.span { grid-column: 1 / -1; }
+    .adapter .box.iface { background: var(--teal); color: #fff; border-color: var(--teal); }
+    .adapter .box.iface code { color: #fff; background: rgba(255,255,255,0.15); }
+    .adapter .box .h { font-weight: 700; display: block; }
+    .adapter .box .d { color: var(--muted); font-size: 0.85em; display: block; }
+    .adapter .box.iface .d { color: var(--teal-soft); }
+    .adapter .down { grid-column: 1 / -1; text-align: center; color: var(--faint); font-size: 1.3em; line-height: 1; }
+
+    /* concept cards */
+    .cards { display: flex; gap: 1em; font-size: 0.7em; }
+    .cards .card { flex: 1; background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 0.8em 1em; }
+    .cards .card .h { font-weight: 700; color: var(--teal-dark); display: block; font-size: 1.1em; margin-bottom: 0.2em; }
+    .cards .card .q { color: var(--ink); display: block; }
+    .cards .card .d { color: var(--muted); display: block; font-size: 0.85em; margin-top: 0.3em; }
+
+    /* the three sentences */
+    .sentences { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+    .sentences li { counter-increment: s; display: flex; gap: 0.6em; align-items: flex-start; margin-bottom: 0.7em; font-size: 0.95em; }
+    .sentences li::before { content: counter(s); flex: 0 0 1.5em; height: 1.5em; border-radius: 50%; background: var(--teal); color: #fff; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8em; margin-top: 0.15em; }
+
+    /* the question game */
+    .qa { display: flex; gap: 1em; font-size: 0.62em; }
+    .qa .q { flex: 1; background: #fff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 0.8em 1em; }
+    .qa .q .ask { font-weight: 700; display: block; }
+    .qa .q .tempt { color: var(--muted); display: block; margin-top: 0.4em; }
+    .qa .q .ans { display: block; margin-top: 0.5em; padding-top: 0.5em; border-top: 1px dashed #e5e7eb; color: var(--teal-dark); font-weight: 600; }
+    .qa .q .why { display: block; color: var(--muted); font-size: 0.9em; }
+
+    .footer-note { position: absolute; bottom: -20px; left: 0; font-size: 0.4em; color: var(--faint); }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- 1 · Title -->
+<section class="center-slide" data-minutes="0.5">
+  <div class="kicker">PromptlyAt9 · 20-minute overview</div>
+  <h1><span class="paw">🐾</span>Artifact to App</h1>
+  <p class="small">From an AI-generated HTML mockup to a verified full-stack application — in seven prompts, with a human at every gate.</p>
+  <p class="tiny muted">The 20-minute tour of the two-hour <em>Artifact to App</em> workshop. Nothing to type today — just the shape of the thing and what each step produced.</p>
+  <aside class="notes">
+    Welcome. Recently a group of us spent two hours turning a pretend app into a real one, using Claude. This is the 20-minute version for everyone who couldn't be there. You don't need to type anything. I want you to leave with three things: the shape of the process, why the human gates are the point, and what actually came out of each prompt — with real-looking excerpts so it isn't hand-waving.
+    Ground rule for me: 20 minutes is tight. Every slide has a time chip in the corner; if I'm over, I skip the 'on-ramps' slide and squeeze the capstone.
+  </aside>
+</section>
+
+<!-- 2 · The problem -->
+<section data-minutes="1">
+  <div class="kicker">The problem</div>
+  <h2>A beautiful, hardcoded lie</h2>
+  <div class="two-col">
+    <div>
+      <p class="small">The starter is <strong>Pet Care Coach</strong>: pets, symptom reports, vet appointments. It looks finished. You can add Maple's "low energy, skipped breakfast" report. It shows up. It works.</p>
+      <p class="small">Then you refresh the page.</p>
+      <p class="small"><strong>Everything is gone.</strong> The data was a JavaScript variable. There is no database, no API, nothing behind the curtain.</p>
+    </div>
+    <div>
+      <pre><code class="language-javascript" data-trim>// starters/pet-coach-starter-react.jsx
+const INITIAL_PETS = [
+  { id: 1, name: "Maple",   species: "Dog",
+    breed: "Lab mix", age: "6y",
+    reports: [
+      { date: "2026-08-28",
+        symptoms: "Low energy, skipped breakfast",
+        urgency: "Moderate" }, /* ... */ ],
+    appointments: [
+      { when: "2026-09-14 · 10:30 AM",
+        type: "Sick visit", vet: "Dr. Patel",
+        status: "Upcoming",
+        promptedBy: "report from 2026-08-28" } ] },
+  { id: 2, name: "Juniper", species: "Cat", /* ... */ },
+  { id: 3, name: "Biscuit", species: "Rabbit",
+    reports: [], appointments: [] },
+];</code></pre>
+      <p class="caption">Sample data lives in the component. Refresh = amnesia.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    This is the motivating demo. In the workshop I click around live: log a report for Maple, then hit refresh, and it vanishes. The line I use: "Everything you just saw was a lie — beautiful, hardcoded lies. Today we make it true."
+    The point of the code on the right isn't the code. It's that the data is nested inside the UI: reports and appointments live inside each pet. That nesting is exactly what a database has to untangle, and it's what Claude has to notice in Prompt 1.
+    Notice too there's nothing in that file hinting at a schema. That's deliberate — the starter is "innocent" so the analysis happens honestly.
+  </aside>
+</section>
+
+<!-- 3 · Big picture -->
+<section data-minutes="2">
+  <div class="kicker">The big picture</div>
+  <h2>Seven prompts, three gates, two apps</h2>
+  <div class="pipeline">
+    <div class="step dim"><span class="n">Prompt 0</span><span class="t">On-ramps</span><span class="s">idea → prototype; HTML → React</span></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="n">Prompt 1</span><span class="t">Analyze</span><span class="s">data model + questions, <em>no code</em></span></div>
+    <div class="gate"><span class="icon">✋</span><span class="lbl">humans answer</span></div>
+    <div class="step"><span class="n">Prompt 2</span><span class="t">SPEC.md</span><span class="s">the contract</span></div>
+    <div class="gate"><span class="icon">✋</span><span class="lbl">spec approved</span></div>
+    <div class="step"><span class="n">Prompt 3</span><span class="t">Artifact app</span><span class="s">runs inside Claude</span></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="n">Prompts 4–5</span><span class="t">Real app</span><span class="s">Next.js + SQLite + API</span></div>
+    <div class="gate"><span class="icon">✋</span><span class="lbl">code reviewed</span></div>
+    <div class="step"><span class="n">Prompt 6</span><span class="t">Verify</span><span class="s">smoke tests → zip</span></div>
+  </div>
+  <p class="tiny muted" style="margin:0 0 0.5em"><span style="color:var(--amber);font-weight:700">✋ = a gate.</span> Nothing continues until a human decides. Three of them, and they're the whole point.</p>
+  <p class="small">Claude infers a data model from the UI, <strong>asks about what the UI leaves ambiguous</strong>, a human confirms a spec, and only then does code get generated — twice: once as an in-chat artifact, once as a real project.</p>
+  <div class="callout">The thing being taught is not any single prompt. It's the rhythm. <strong style="color:inherit">AI does the typing; you do the deciding.</strong></div>
+  <aside class="notes">
+    This is the whole workshop on one slide; everything after this is zooming in. Walk left to right. Prompt 0 is optional on-ramps. Prompt 1 is analysis only — Claude is forbidden from writing code. Gate one: it asks questions, humans answer. Prompt 2 turns those answers into SPEC.md, a document that every later prompt cites. Gate two: a human approves the spec, out loud, in the chat. Then two builds from the same spec: an artifact that runs inside the Claude chat window, and a real Next.js project. Gate three: code review of one route and one component. Prompt 6 proves it works and packages it.
+    The amber gates are the point. The prompts are copy-paste; the decisions at the gates were the actual work in the room.
+  </aside>
+</section>
+
+<!-- 4 · Three concepts -->
+<section data-minutes="1">
+  <div class="kicker">Vocabulary</div>
+  <h2>Only three concepts you need</h2>
+  <div class="cards">
+    <div class="card"><span class="h">Table / schema</span><span class="q">"A spreadsheet with rules."</span><span class="d">Columns have types, some are required, some point at rows in other tables. The <em>schema</em> is the list of those rules.</span></div>
+    <div class="card"><span class="h">API</span><span class="q">"The counter between the kitchen and the dining room."</span><span class="d">The UI never walks into the kitchen. It orders: <code>GET /api/pets</code>, <code>POST /api/appointments</code>. The server cooks.</span></div>
+    <div class="card"><span class="h">Adapter</span><span class="q">"The UI doesn't know where data lives."</span><span class="d">Buttons call <code>db.createPet()</code>. What <code>db</code> is plugged into can be swapped. This one idea is why the same app ran in two worlds.</span></div>
+  </div>
+  <div class="adapter">
+    <div class="box span"><span class="h">UI components</span><span class="d">identical in both apps</span></div>
+    <div class="down">↓</div>
+    <div class="box span iface"><span class="h">data interface</span><span class="d"><code>listPets · createPet · createSymptomReport · createAppointment …</code></span></div>
+    <div class="box"><span class="h">storage adapter</span><span class="d">artifact — persists inside Claude</span></div>
+    <div class="box"><span class="h">fetch adapter</span><span class="d">real app — calls your API + SQLite</span></div>
+  </div>
+  <aside class="notes">
+    For the knowledge workers in the room, these are the only three words that matter. Schema: a spreadsheet with rules. API: the counter between kitchen and dining room — the UI orders, the server cooks. Adapter: the UI doesn't know where the data lives.
+    The diagram at the bottom is the one I drew on the whiteboard at minute ten of the workshop and pointed back at for two hours. Same components on top, a small named interface in the middle, and two plug-in adapters underneath. Hold this picture; it comes back on the Prompt 5 slide as actual code.
+  </aside>
+</section>
+
+<!-- 5 · Prompt 0 on-ramps -->
+<section data-minutes="1">
+  <div class="stage"><span class="badge">Prompt 0A · 0B</span><h2>Where the mockup comes from</h2><span class="gatebadge">optional on-ramps</span></div>
+  <div class="two-col">
+    <div>
+      <p class="caption"><strong>0A — idea → prototype.</strong> Two passes, on purpose. Pass 1 is a few plain sentences:</p>
+      <div class="prompt">I have an idea for a small web app called Pet Care Coach. It's a simple health-record tracker for pet owners… Build me a quick clickable prototype as a <span class="em">single, self-contained HTML file</span> (inline CSS and JS, no build step, no backend)… <span class="em">It's fine if everything resets on refresh</span> — I just want to see the idea.</div>
+      <p class="caption">Pass 2 levels up the brief: two screens, teal accent, three named sample pets, the empty state for Biscuit the rabbit. The result: a clickable prototype like today's starter.</p>
+    </div>
+    <div>
+      <p class="caption"><strong>0B — plain HTML → React.</strong> Only if what you have is old-school HTML:</p>
+      <div class="prompt">Convert it to a single-file React component… <span class="em">Preserve all hardcoded sample data exactly as it is.</span> Local component state only — do not add persistence, a data layer, routing libraries, or any new features. <span class="em">This is a straight translation.</span></div>
+      <div class="callout teal" style="margin-top:0.6em">What it produced: a same-looking, same-behaving React file — and a short list of anything that didn't translate one-to-one.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    Quick one, and the first to cut if I'm behind. Prompt 0A is where the mockup itself came from: a rough prompt to see the idea, then a refined brief once there's something to react to. The teaching point is that the rough pass exposes every decision Claude made on your behalf — what fields a pet has, what "urgency" looks like — so you can keep or override them. That back-and-forth is the skill, not the prompt.
+    0B is the on-ramp for legacy HTML: convert it to React, change nothing else. Then everyone in the room switches to the shared starter so we're all staring at the same ambiguities.
+  </aside>
+</section>
+
+<!-- 6 · Prompt 1 -->
+<section data-minutes="1.5">
+  <div class="stage"><span class="badge">Prompt 1</span><h2>Analyze the UI — and ask, don't build</h2><span class="gatebadge">gate: humans answer</span></div>
+  <div class="two-col wide-left">
+    <div>
+      <div class="prompt">I want to turn this frontend into a database-backed web application… <span class="em">This first step is analysis only — do not write any application code yet.</span>
+
+1. Identify every kind of data the UI displays or collects, including data that is nested inside other data.
+2. Propose a relational data model…
+3. List every assumption you had to make.
+4. <span class="em">Ask me numbered clarifying questions wherever the UI is genuinely ambiguous</span> about the data. Pay particular attention to: values that might be fixed lists vs. free text; displayed values that might be stored vs. derived; text that might really be a date, time, or number…
+
+<span class="em">Wait for my answers before proposing the final schema.</span></div>
+    </div>
+    <div>
+      <p class="caption">What came back — a model and a list of questions, <em>no code</em>:</p>
+      <pre><code class="language-markdown" data-trim>Proposed tables
+  pets · symptom_reports · appointments
+  (reports and appointments are nested in
+   the UI → they become child tables with
+   a pet_id foreign key)
+
+Questions before I finalize the schema
+1. Pet age is shown as "6y". Store the
+   age, or a birthdate and compute it?
+2. Appointment status shows Upcoming /
+   Completed. Stored, or derived from
+   the appointment time?
+3. "2026-09-14 · 10:30 AM" is a display
+   string. Store as text or a timestamp?
+   … (seven questions in all)</code></pre>
+    </div>
+  </div>
+  <aside class="notes">
+    This is the prompt that makes the workshop work. Note the two highlighted constraints: no code, and wait for my answers. Claude reads the mockup and comes back with a proposed model — three tables, because it noticed the nesting — and a numbered list of questions.
+    In the workshop this is a game: the starter has seven ambiguities planted in it, and the room gets to argue about each one before we settle on an answer. I'm going to show you three of the seven on the next slide and keep the other four for the next time we run it. If your Claude jumped ahead and wrote code, you get to scold it: "Stop — ask your clarifying questions first." That works almost every time, and it teaches that the gates are instructions you're allowed to enforce.
+  </aside>
+</section>
+
+<!-- 7 · The question game -->
+<section data-minutes="2">
+  <div class="kicker">Gate 1 · the question game</div>
+  <h2>The UI lies by omission — three of the seven</h2>
+  <div class="qa">
+    <div class="q">
+      <span class="ask">Age is displayed as "6y". Store the age?</span>
+      <span class="tempt">Tempting: yes, it's right there on the card.</span>
+      <span class="ans">Store <code>birthdate</code>; compute the age.</span>
+      <span class="why">Stored age goes stale. Maple has a birthday. Someone in the room always spots it — applause moment.</span>
+    </div>
+    <div class="q">
+      <span class="ask">Status shows Upcoming / Completed. Stored, or derived from the date?</span>
+      <span class="tempt">Tempting: "just compare to today."</span>
+      <span class="ans">Stored column, <code>CHECK (Upcoming, Completed, Cancelled)</code>.</span>
+      <span class="why">"What about Cancelled?" You can't derive that from a timestamp. The room discovers it themselves.</span>
+    </div>
+    <div class="q">
+      <span class="ask">"2026-09-14 · 10:30 AM" — store that string?</span>
+      <span class="tempt">Tempting: it's what the screen shows.</span>
+      <span class="ans">A real <code>scheduled_at</code> timestamp; formatting is the UI's job.</span>
+      <span class="why">Never store display strings. You can't sort, filter, or reschedule a sentence.</span>
+    </div>
+  </div>
+  <p class="small muted" style="margin-top:0.6em">The other four ambiguities are deliberately not on this slide — they're yours to argue over at the next full workshop.</p>
+  <aside class="notes">
+    Three examples of what a mockup can't tell you. Age: the card says 6y, but stored age rots — store the birthdate. Status: everyone's first instinct is derive it from the date, and then someone says "what about Cancelled?" and the whole room sees why it has to be a stored column with a fixed set of values. Timestamp: never store the display string.
+    The meta-point: these aren't database trivia. They're decisions a human had to make, and Claude had to ask about, before a single line of code existed. This is where AI fluency shows up — knowing to demand the questions instead of accepting the first confident answer.
+    Deliberately not spoiling the other four.
+  </aside>
+</section>
+
+<!-- 8 · Prompt 2 SPEC -->
+<section data-minutes="1.5">
+  <div class="stage"><span class="badge">Prompt 2</span><h2>The spec is the contract</h2><span class="gatebadge">gate: "SPEC approved, continue"</span></div>
+  <div class="two-col dense">
+    <div>
+      <p class="caption">Answers go in first, then the prompt: <em>"write a SPEC.md that will be the single source of truth for everything we generate next… Do not generate any application code until I approve the spec."</em></p>
+      <pre><code class="language-markdown" data-trim>## 1. Data model
+### pets
+| column    | type       | notes                    |
+| id        | integer PK | auto-increment           |
+| name      | text       | required                 |
+| species   | text       | Dog/Cat/Rabbit/Other     |
+| breed     | text       |                          |
+| birthdate | date       | age computed for display |
+| created_at, updated_at | on every table          |
+
+### appointments
+| pet_id            | FK → pets                    |
+| symptom_report_id | FK → symptom_reports, NULL ok|
+| visit_type        | text                         |
+| scheduled_at      | timestamp — UI formats it    |
+| vet_name          | text                         |
+| status            | text CHECK (Upcoming,        |
+|                   |   Completed, Cancelled)      |</code></pre>
+    </div>
+    <div>
+      <pre><code class="language-markdown" data-trim>## 2. REST API
+GET/POST        /api/pets
+GET/PUT/DELETE  /api/pets/:id
+GET/POST        /api/symptom-reports?petId=
+GET/POST        /api/appointments?petId=
+… list · get-one · create · update · delete, every entity
+
+## 3. Data interface   ← the UI only calls these
+listPets · getPet · createPet · updatePet · deletePet
+listSymptomReports(petId) · createSymptomReport · …
+listAppointments(petId) · createAppointment · …
+Every function maps to exactly one endpoint.
+
+## 4. Seed data
+Maple   (Dog, Lab mix, born 2020-05-11) · 2 reports · 2 appts
+Juniper (Cat, shorthair, born 2023-06-30) · 1 · 1
+Biscuit (Rabbit, Holland Lop, born 2024-04-02) · none
+
+## 5. Locked v1 constraints
+SQLite via Drizzle, clean path to Postgres · integer PKs
+created_at/updated_at everywhere · no triggers or views
+no auth in v1 — but designed so adding it is a clean step</code></pre>
+    </div>
+  </div>
+  <aside class="notes">
+    Prompt 2 turns the room's answers into SPEC.md. Five sections: the confirmed data model — notice birthdate, notice the nullable symptom_report_id, notice status as a stored CHECK column; those are the answers from the question game, written down. Then the API surface, the data interface — the short list of function names the UI is allowed to call — the seed data, and the locked constraints.
+    Then the second gate, and I make it visible: someone types "SPEC approved, continue" into the chat. Nothing gets built that isn't written down and approved. If you've heard of spec-driven development tooling like OpenSpec, this is that ritual, done by hand so you feel it.
+  </aside>
+</section>
+
+<!-- 9 · Prompt 3 artifact -->
+<section data-minutes="2">
+  <div class="stage"><span class="badge">Prompt 3</span><h2>App #1 — the artifact that remembers</h2><span class="gatebadge">the gratification spike</span></div>
+  <div class="two-col wide-left dense">
+    <div>
+      <p class="caption">"Build a version I can use right now… <em>all data access goes through the data interface in SPEC.md</em>, implemented with a storage adapter backed by <code>window.storage</code>, so my records survive closing and reopening this conversation."</p>
+      <pre><code class="language-javascript" data-trim data-line-numbers="1-8|10-21|23-24">// the storage adapter — the artifact's "database"
+const KEY = "petcoach:v1";
+async function load() {
+  try { const r = await window.storage.get(KEY);
+        return r ? JSON.parse(r.value) : null; }
+  catch { return null; }
+}
+async function save(s) { await window.storage.set(KEY, JSON.stringify(s)); }
+
+export const db = {
+  listPets:  async () => (await state()).pets,
+  getPet:    async (id) => (await state()).pets.find(p => p.id === id),
+  createPet: async (input) => {
+    const s = await state();            // stored blob, or the SPEC seed
+    const pet = { id: nextId(s.pets), ...input, createdAt: now() };
+    s.pets.push(pet); await save(s); return pet;
+  },
+  createSymptomReport: async (input) => { /* same shape */ },
+  createAppointment:   async (input) => { /* same shape */ },
+  resetDemoData:       async () => save(seedFromSpec()),
+};
+
+// …and in the component, the button has no idea any of this exists:
+&lt;button onClick={() =&gt; db.createPet(form).then(refresh)}&gt;Add pet&lt;/button&gt;</code></pre>
+    </div>
+    <div>
+      <p class="small">What it produced: <strong>a working Pet Care Coach inside the chat.</strong></p>
+      <ul class="small">
+        <li>Add a pet, log a report, schedule an appointment.</li>
+        <li>Close the conversation. Reopen it. <strong>Still there.</strong></li>
+        <li>Open the same chat on your phone — there's your app.</li>
+        <li>A "Reset demo data" button restores the seed.</li>
+      </ul>
+      <div class="callout">The components call <code style="color:inherit;background:transparent">db.createPet</code>, not storage. <em>The UI has no idea where the data lives.</em> Hold that thought.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    This is the moment the room lights up. Fifteen minutes after the spec was approved, everyone has a working app running inside their Claude chat, and it remembers. Claude artifacts have a small persistent pocket — window.storage — and we use it as a stand-in database.
+    Step through the code highlights: the adapter loads and saves a blob; the db object exposes exactly the names from SPEC.md; and the button in the component calls db.createPet and nothing else. That last line is the setup for the punchline in Prompt 5.
+    In the workshop this is five minutes of free play — add your own actual pet — then the kicker: close the chat, reopen it, data's still there.
+  </aside>
+</section>
+
+<!-- 10 · Prompt 4 DB layer -->
+<section data-minutes="1.5">
+  <div class="stage"><span class="badge">Prompt 4</span><h2>App #2 — the real database layer</h2><span class="gatebadge">gate: schema files match SPEC</span></div>
+  <p class="caption">"Now we build the real application from the same SPEC.md… in stages so I can review each layer." → a Next.js project: <code>db/schema.ts</code>, <code>schema.sql</code>, a re-runnable <code>db/seed.ts</code>, <code>lib/data.ts</code> (the only file that touches the DB), and <code>middleware.ts</code> — empty except for one comment: <em>"future authentication insertion point."</em></p>
+  <div class="two-col dense">
+    <div>
+      <p class="caption"><code>db/schema.ts</code> — the ORM rendering</p>
+      <pre><code class="language-typescript" data-trim>export const pets = sqliteTable("pets", {
+  id:        integer("id").primaryKey({ autoIncrement: true }),
+  name:      text("name").notNull(),
+  species:   text("species").notNull(),
+  breed:     text("breed"),
+  birthdate: text("birthdate").notNull(),   // ISO date
+  createdAt: text("created_at").notNull().default(now),
+  updatedAt: text("updated_at").notNull().default(now),
+});
+
+export const appointments = sqliteTable("appointments", {
+  id:              integer("id").primaryKey({ autoIncrement: true }),
+  petId:           integer("pet_id").notNull()
+                     .references(() => pets.id),
+  symptomReportId: integer("symptom_report_id")       // nullable
+                     .references(() => symptomReports.id),
+  visitType:       text("visit_type").notNull(),
+  scheduledAt:     text("scheduled_at").notNull(),     // ISO timestamp
+  vetName:         text("vet_name").notNull(),
+  status:          text("status", { enum: STATUSES }).notNull(),
+  /* createdAt / updatedAt as above */
+});</code></pre>
+    </div>
+    <div>
+      <p class="caption"><code>schema.sql</code> — the same model, as plain SQL for humans</p>
+      <pre><code class="language-sql" data-trim>CREATE TABLE pets (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  name       TEXT NOT NULL,
+  species    TEXT NOT NULL,
+  breed      TEXT,
+  birthdate  TEXT NOT NULL,  -- age computed, never stored
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE appointments (
+  id                INTEGER PRIMARY KEY AUTOINCREMENT,
+  pet_id            INTEGER NOT NULL
+                      REFERENCES pets(id),
+  symptom_report_id INTEGER              -- optional link
+                      REFERENCES symptom_reports(id),
+  visit_type        TEXT NOT NULL,
+  scheduled_at      TEXT NOT NULL,       -- ISO timestamp
+  vet_name          TEXT NOT NULL,
+  status            TEXT NOT NULL CHECK (status IN
+                      ('Upcoming','Completed','Cancelled')),
+  /* created_at / updated_at as above */
+);</code></pre>
+    </div>
+  </div>
+  <aside class="notes">
+    Same spec, second build — and we build it in layers so each one can be reviewed. This stage is skeleton plus database only. The review moment is putting SPEC.md, schema.ts and schema.sql side by side: one model, three renderings. Birthdate, nullable report link, status CHECK — every decision from the question game is here, verbatim.
+    For the technical folks this is the Drizzle pitch. For everyone else the sentence is: the spec became real.
+    And point at middleware.ts: an empty file with a single comment. That's where sign-in goes in the sequel workshop. We planned the extension before writing v1 — that's the whole trick to not painting yourself into a corner.
+    Prep note that bit us: Prompt 4 now insists on pinned versions, because a bare TypeScript install pulls TS 7 and Next.js 15 refuses to build against it.
+  </aside>
+</section>
+
+<!-- 11 · Prompt 5 API + wiring -->
+<section data-minutes="2">
+  <div class="stage"><span class="badge">Prompt 5</span><h2>The API — and the adapter payoff</h2><span class="gatebadge">gate: review one route + one component</span></div>
+  <div class="two-col dense">
+    <div>
+      <p class="caption"><code>app/api/pets/[id]/route.ts</code> — a thin wrapper over <code>lib/data.ts</code>, no database code in routes</p>
+      <pre><code class="language-typescript" data-trim>import { getPet, updatePet, deletePet } from "@/lib/data";
+
+export async function GET(_req: Request, { params }: Ctx) {
+  const pet = await getPet(Number(params.id));
+  return pet
+    ? Response.json(pet)
+    : Response.json({ error: "Not found" }, { status: 404 });
+}
+
+export async function PUT(req: Request, { params }: Ctx) {
+  const body = await req.json();
+  if (!body.name)
+    return Response.json({ error: "name is required" }, { status: 400 });
+  const pet = await updatePet(Number(params.id), body);
+  return pet
+    ? Response.json(pet)
+    : Response.json({ error: "Not found" }, { status: 404 });
+}</code></pre>
+      <p class="caption">"Summarize what changed in the components" → <strong>almost nothing.</strong> Loading and error states added; hardcoded data removed; every call still goes to <code>db.*</code>.</p>
+    </div>
+    <div>
+      <p class="caption"><code>lib/client-db.ts</code> (real app) next to the artifact's storage adapter — <strong>same names, same shapes, different backend</strong></p>
+      <pre><code class="language-typescript" data-trim>// fetch adapter — real app
+export const db = {
+  listPets:  () => api("GET",  "/api/pets"),
+  getPet:    (id) => api("GET", `/api/pets/${id}`),
+  createPet: (input) => api("POST", "/api/pets", input),
+  createSymptomReport: (i) => api("POST", "/api/symptom-reports", i),
+  createAppointment:   (i) => api("POST", "/api/appointments", i),
+};</code></pre>
+      <pre><code class="language-javascript" data-trim>// storage adapter — artifact (Prompt 3)
+export const db = {
+  listPets:  async () => (await state()).pets,
+  getPet:    async (id) => (await state()).pets.find(…),
+  createPet: async (input) => { /* push + save */ },
+  createSymptomReport: async (i) => { /* … */ },
+  createAppointment:   async (i) => { /* … */ },
+};</code></pre>
+      <div class="callout teal">Same components. Same interface. Two adapters. <em>That's why one app ran in two worlds.</em></div>
+    </div>
+  </div>
+  <aside class="notes">
+    Prompt 5 generates the REST routes from the spec — thin wrappers, real status codes, 404 and 400 where they belong — and ports the UI into the project with a fetch-based adapter instead of the storage one.
+    The teaching moment is the diff. I ask Claude to summarize what changed in the components and the honest answer is "almost nothing". Then the right-hand column: client-db.ts on top, the artifact's storage adapter below. Same function names. Same shapes. One talks HTTP, one talks to Claude's storage pocket. Point back at the whiteboard diagram from slide four — this is the lecture's thesis proven in code. It's also the same trick that later lets you swap SQLite for Postgres, or add sign-in, without touching the UI.
+  </aside>
+</section>
+
+<!-- 12 · Prompt 6 verify -->
+<section data-minutes="1.5">
+  <div class="stage"><span class="badge">Prompt 6</span><h2>Trust, but verify — then ship the zip</h2><span class="gatebadge">gate: green smoke tests</span></div>
+  <div class="two-col wide-left dense">
+    <div>
+      <p class="caption">"Prove the application works, then package it": install, push the schema, seed, start the dev server, and <em>smoke-test the running API with real HTTP requests</em>.</p>
+      <pre><code class="language-text" data-trim>$ npm install && npm run db:push && npm run db:seed && npm run dev
+✔ schema pushed · seeded 3 pets, 3 reports, 3 appts · :3000
+
+── CRUD, every entity ─────────────────────────────
+GET    /api/pets              → 200  [Maple, Juniper, Biscuit]
+POST   /api/pets              → 201  {"id":4,"name":"Olive",…}
+PUT    /api/pets/4            → 200  {"id":4,"breed":"Siamese",…}
+GET    /api/pets/99           → 404  {"error":"Not found"}
+POST   /api/pets  (no name)   → 400  {"error":"name is required"}
+DELETE /api/pets/4            → 204
+… same for symptom-reports and appointments
+
+── End-to-end flow ────────────────────────────────
+POST /api/pets                → 201  id 5  "Olive"
+POST /api/symptom-reports     → 201  id 4  petId 5, "Low"
+POST /api/appointments        → 201  id 4  petId 5,
+                                      symptomReportId 4, "Upcoming"
+GET  /api/pets/5              → 200  pet + report + linked appt ✔
+
+── Restart ────────────────────────────────────────
+server stopped … started · GET /api/pets → 200, 4 pets
+Data persisted across restart ✔</code></pre>
+    </div>
+    <div>
+      <p class="small">What it produced:</p>
+      <ul class="small">
+        <li>A smoke-test transcript — real requests against a real server against a real database file, inside Claude's sandbox.</li>
+        <li>A <strong>README</strong>: install, run, how the seed works, and the SQLite → PostgreSQL migration path.</li>
+        <li>A <strong>zip of the whole project</strong>. Anyone with Node runs it in three commands.</li>
+      </ul>
+      <div class="callout">If something fails here, <em>let it play out.</em> Claude reading its own stack trace and fixing it is the most persuasive minute of the workshop.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    Last prompt: prove it. Claude installs, pushes the schema, seeds, starts the server, and then hits it with real HTTP requests — list, get, create, update, delete for every entity, one realistic end-to-end flow, and a restart to prove the data lives on disk. Then it writes the README and zips the project.
+    The thing I tell the room: when a failure happens mid-verification, don't rescue it. Watching Claude read its own error and fix it is the single most credible minute of the two hours. Verification is the stage that makes everything before it believable.
+    Track B people take that zip home and run it with Claude Code; it installs, seeds, launches and previews it for you.
+  </aside>
+</section>
+
+<!-- 13 · Capstone: skill -->
+<section data-minutes="1.5">
+  <div class="stage"><span class="badge">Capstone</span><h2>Make the prompts disappear</h2></div>
+  <div class="two-col wide-left">
+    <div>
+      <p class="small">You ran seven prompts and made maybe ten decisions. <strong>The prompts are now overhead — the decisions were the work.</strong> So the whole pipeline gets packaged as a Claude <em>skill</em>: instructions Claude follows on its own, gates included.</p>
+      <pre><code class="language-markdown" data-trim>---
+name: ui-to-database-app
+description: Turn a frontend-only UI (React or plain HTML) into a
+  database-backed web application through a gated, spec-driven
+  pipeline. Use whenever the user provides a frontend and asks to
+  make it a real app, add a database, or make its data persist…
+---
+# UI → Database-Backed App
+You are running a staged pipeline… The pipeline has **human
+approval gates** — never skip ahead of a gate, even if you are
+confident. The user decides; you generate.
+
+## Pipeline
+### Step 1 — Analyze and ask (NO CODE)
+### Step 2 — Spec (wait for approval)
+### Step 3 — Artifact app · Step 4 — DB layer · Step 5 — API + UI
+### Step 6 — Verify and package</code></pre>
+    </div>
+    <div>
+      <p class="small">The mic-drop demo, in a fresh chat: attach the plain-HTML starter and say only</p>
+      <div class="prompt">Turn this into a database-backed web app.</div>
+      <p class="small" style="margin-top:0.6em">Claude walks the whole pipeline — asks the clarifying questions, <strong>pauses at the spec gate</strong>, builds both apps, verifies.</p>
+      <p class="tiny muted">Lives at <code>skill/ui-to-database-app/SKILL.md</code>. Domain-agnostic: point it at any frontend.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    The capstone reframes the whole session. The prompts you just watched were scaffolding. Once you know the decisions, the prompts are overhead — so we package the pipeline as a skill. The frontmatter tells Claude when to use it; the body is the pipeline as instructions, with the gates written in: never skip ahead, the user decides, you generate.
+    Then the demo: fresh chat, attach the HTML mockup, one sentence. Claude asks the questions, stops at the spec gate, and waits for a human. The gates survived being automated. That's the AI-fluency lesson in one line: encode your judgment as the process, not as a prompt you have to remember.
+  </aside>
+</section>
+
+<!-- 14 · Three sentences -->
+<section data-minutes="0.5">
+  <div class="kicker">If you remember three things</div>
+  <h2>The three sentences</h2>
+  <ol class="sentences">
+    <li>"The prompts do the typing; the gates do the deciding — <strong>and you are the gates.</strong>"</li>
+    <li>"Same components, same interface, two adapters — <strong>that's why one app ran in two worlds.</strong>"</li>
+    <li>"The spec is the contract: <strong>nothing gets built that isn't written down and approved.</strong>"</li>
+  </ol>
+  <aside class="notes">
+    These are the three sentences I landed verbatim at the end of the workshop, and they're the three I'd want you to walk out with today. Read them slowly.
+  </aside>
+</section>
+
+<!-- 15 · Next steps -->
+<section data-minutes="0.5">
+  <div class="kicker">Where to go from here</div>
+  <h2>Run it yourself</h2>
+  <div class="two-col">
+    <div>
+      <ul class="small">
+        <li><strong>Everything is in the repo:</strong> <code>github.com/terrytompkins/ArtifactToAppWorkshop</code></li>
+        <li><code>student/pipeline-prompts.md</code> — the seven prompts, copy-paste ready.</li>
+        <li><code>student/student-handout.md</code> — pre-class setup, the session narrative, troubleshooting.</li>
+        <li><code>starters/</code> — the Pet Care Coach mockup, React and plain HTML.</li>
+        <li><code>skill/ui-to-database-app/</code> — the capstone skill.</li>
+      </ul>
+    </div>
+    <div>
+      <ul class="small">
+        <li><strong>Try it solo:</strong> a claude.ai chat with file creation enabled, the React starter, Prompts 1–6. Budget ~90 minutes.</li>
+        <li><strong>Or bring your own frontend.</strong> The prompts say "the frontend I've provided" — they don't care that it's about pets.</li>
+        <li><strong>Next full workshop:</strong> the other four ambiguities are waiting for you.</li>
+        <li><strong>The sequel:</strong> that empty <code>middleware.ts</code> is an appointment we made with our future selves — SSO sign-in and per-user data. Same method: spec first, gates always, verify at the end.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="footer-note">Pet Care Coach is a fictional product used for class purposes. It does not replace veterinary care.</p>
+  <aside class="notes">
+    Close with the roadmap. The repo has everything a participant needs — share the student folder and the starters, not the facilitator folder. Anyone can run the pipeline alone in about ninety minutes, or point it at a frontend of their own. And the sequel is already scheduled by that empty middleware file: sign-in, per-user data, same method.
+    Hand back to the room for questions if there's time; otherwise, thank the guest speaker and close.
+  </aside>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    width: 1280,
+    height: 720,
+    margin: 0.06,
+    hash: true,
+    slideNumber: "c/t",
+    progress: true,
+    controls: true,
+    transition: "fade",
+    transitionSpeed: "fast",
+    plugins: [ RevealHighlight, RevealNotes ],
+  });
+</script>
+</body>
+</html>
